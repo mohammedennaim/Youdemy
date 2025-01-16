@@ -35,4 +35,18 @@ class AuthController {
         }
     }
 
+    public function signUp($name, $email, $password, $role) {
+        $userModel = new AuthModel();
+        
+        $userSignUp = $userModel->findUserByEmailAndPassword($email, $password);
+        
+        if ($userSignUp === null) {
+            $userModel->register($name, $email, $password, $role);
+            header("Location: ../$role/home.php");
+            exit();
+        } else {
+            echo "Cet email existe déjà.";
+        }
+    }
+
 }

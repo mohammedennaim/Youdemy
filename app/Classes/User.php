@@ -3,7 +3,7 @@
 namespace App\Classes;
 
 
-class User {
+abstract class User {
     protected $id;
     protected $email;
     protected $password;
@@ -17,9 +17,10 @@ class User {
     }
 
 
-    public function getId() { return $this->id; }
-    public function getEmail() { return $this->email; }
-    public function getPassword() { return $this->password; }
-    public function getRole() { return $this->role; }
+    
+    abstract public function getId();
+    abstract public function getEmail();
+    abstract public function getPassword();
+    abstract public function getRole();
     
 }

@@ -1,7 +1,6 @@
 <?php
 namespace App\Models;
 
-// use App\Classes\Role;
 use App\Classes\Administrateur;
 use App\Config\Database;
 use PDO;
@@ -33,5 +32,21 @@ class AuthModel{
       }
    }
 
-   
+   public function register($name, $email, $password, $role) {
+      $hash = password_hash($password, PASSWORD_DEFAULT);
+      $query = "INSERT INTO users (name, email, password, role) VALUES (:name, :email, :password, :role);";
+      $stmt = $this->conn->prepare($query);
+  
+      $stmt->bindParam(':name', $name);
+      $stmt->bindParam(':email', $email);
+      $stmt->bindParam(':password', $hash);
+      $stmt->bindParam(':role', $role);
+
+      if ($stmt->execute()) {
+         
+         $userId = $this->conn->lastInsertId();
+         return new Administrateur($userId, $email, $hash, $role);
+      }
+      return null;
+  }
 }

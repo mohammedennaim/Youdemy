@@ -6,8 +6,8 @@ class Enseignant extends User {
     private $subject;
     private $name;
 
-    public function __construct($id, $email, $password, $name, $subject) {
-        parent::__construct($id, $email, $password, 'enseignant');
+    public function __construct($id, $email, $password, $role, $name, $subject) {
+        parent::__construct($id, $email, $password, $role);
         $this->subject = $subject;
         $this->name = $name;
     }
@@ -20,8 +20,7 @@ class Enseignant extends User {
         $this->subject = $subject;
     }
 
-    // Implémentation des méthodes abstraites
-    public function getDetails() {
+    public function __tostring() {
         return "Enseignant: {$this->name}, Email: {$this->email}, Matière: {$this->subject}";
     }
 
@@ -32,4 +31,9 @@ class Enseignant extends User {
     public function getName() {
         return $this->name;
     }
+    
+    public function getId() { return $this->id; }
+    public function getEmail() { return $this->email; }
+    public function getPassword() { return $this->password; }
+    public function getRole() { return $this->role; }
 }

@@ -2,6 +2,8 @@
 namespace App\Models;
 
 use App\Classes\Administrateur;
+use App\Classes\Enseignant;
+use App\Classes\Etudiant;
 use App\Config\Database;
 use PDO;
 
@@ -25,7 +27,18 @@ class AuthModel{
           return null;
       } else {
          if ($email == $row["email"] && password_verify($password, $row["password"])) {
-            return new Administrateur($row['id'], $row["email"], $row["role"], $row["password"]);
+            switch ($row["role"]) {
+               case "administrateur":
+                  return new Administrateur($row['id'], $row["name"], $row["email"], $row["password"], $row["role"]);
+               case "enseignant":
+                  return new Enseignant($row['id'], $row["email"], $row["password"],$row["name"],$row["role"]);
+               case "etudiant":
+                  return new Etudiant($row['id'], $row["email"] , $row["password"], $row["name"],$row["role"]);
+               default:
+                   header("Location: login.php");
+                   break;
+           }
+           exit();
          } else {
             return null;
          }
@@ -45,7 +58,18 @@ class AuthModel{
       if ($stmt->execute()) {
          
          $userId = $this->conn->lastInsertId();
-         return new Administrateur($userId, $email, $hash, $role);
+         switch ($role) {
+            case "administrateur":
+               return new Administrateur($userId,$name, $email, $hash, $role);
+            case "enseignant":
+               return new Enseignant($userId, $email, $hash, $name, $role);
+            case "etudiant":
+               return new Etudiant($userId, $email, $hash, $name, $role);
+            default:
+               header("Location: login.php");
+               break;
+        }
+        exit();
       }
       return null;
   }

@@ -114,8 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST")
               <div class="mb-6">
               <select name="role" id ="role">
                 <option value="">Selectionnez un role</option>
-                <option value="student" name= 'student' id = 'student'>Student</option>
-                <option value="teacher" name='teacher' id ='teacher'>Teacher</option>
+                <option value="etudiant" name= 'etudiant' id = 'etudiant'>Etudiant</option>
+                <option value="enseignant" name='enseignant' id ='enseignant'>Enseignant</option>
               </select>
               </div>
               <div class="flex mt-6 text-sm">

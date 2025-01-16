@@ -16,13 +16,13 @@ class AuthController {
             $_SESSION["role"] = $role;
 
             switch ($role) {
-                case "admin":
+                case "administrateur":
                     header("Location: ../$role/dashboard/public/index.php");
                     break;
-                case "teacher":
+                case "enseignant":
                     header("Location: ../$role/home.php");
                     break;
-                case "student":
+                case "etudiant":
                     header("Location: ../$role/home.php");
                     break;
                 default:

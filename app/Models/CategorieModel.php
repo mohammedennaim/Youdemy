@@ -31,7 +31,7 @@ class CategorieModel
      }
      
     public function findByName($name) {
-        $stmt = $this->conn->prepare("SELECT * FROM categories WHERE categorie_name = :name");
+        $stmt = $this->conn->prepare("SELECT * FROM categories WHERE name = :name");
         $stmt->bindParam(':name', $name);
         $stmt->execute(); 
     

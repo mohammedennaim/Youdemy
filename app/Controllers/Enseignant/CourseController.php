@@ -34,6 +34,15 @@ class CourseController {
             return 'error '.$e->getMessage();
         }
     }
+    public function deleteCourse($id) {
+        $result = $this->courseModel->supprimerCourse($id);
+
+        if ($result) {
+            echo "Le cours a été supprimé avec succès.";
+        } else {
+            echo "Échec de la suppression du cours.";
+        }
+    }
 
     // public function addCourse() {
     //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

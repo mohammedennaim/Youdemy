@@ -427,17 +427,19 @@ if (isset($_POST["addCategory"])) {
 														<div>
 															<button
 																class="header_search_button d-flex flex-column align-items-center justify-content-center">
-																<div class="enroll_button1 trans_200"><a
-																		href="./course.php">modifier</a></div>
+																<div class="enroll_button1 trans_200">
+                                                                    <a href="./course.php">modifier</a>
+                                                                </div>
 															</button>
-                                                            <button
-                                                                type="submit"
-                                                                class="header_search_button d-flex flex-column align-items-center justify-content-center">
-                                                                <input type="hidden" name="delete_course" value="'. $categorie->getId().'">
-																<div class="enroll_button2 trans_200">
-                                                                    <a href="./course.php">Supprimer</a></div>
-															</button>
-														</div>
+                                                            <input type="hidden" name="delete_course" value="<?php $course->getId() ?>">    
+                                                            <div class="enroll_button2 trans_200">
+                                                                <button
+                                                                    type="submit"
+                                                                    class="header_search_button d-flex flex-column align-items-center justify-content-center">
+                                                                    Supprimer
+                                                                </button>
+                                                            </div>
+                                                        </div>
 													</div>
 												</div>
 												<br>

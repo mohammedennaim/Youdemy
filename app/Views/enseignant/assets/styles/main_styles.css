@@ -187,14 +187,8 @@ p a:hover::after
 {
 	opacity: 0.2;
 }
-::selection
-{
-	
-}
-p::selection
-{
-	
-}
+
+
 h1{font-size: 48px;}
 h2{font-size: 36px;}
 h3{font-size: 24px;}
@@ -210,15 +204,7 @@ h1, h2, h3, h4, h5, h6
 	color: #384158;
 	margin-bottom: 0;
 }
-h1::selection, 
-h2::selection, 
-h3::selection, 
-h4::selection, 
-h5::selection, 
-h6::selection
-{
-	
-}
+
 .form-control
 {
 	color: #db5246;
@@ -345,10 +331,7 @@ section
 	width: 100%;
 	background: #14bdee;
 }
-.header.scrolled .top_bar
-{
 
-}
 .top_bar_container
 {
 	width: 100%;
@@ -484,10 +467,7 @@ section
 3.4 Main Nav
 *********************************/
 
-.main_nav_contaner
-{
 
-}
 .main_nav,
 .search_button,
 .shopping_cart
@@ -611,10 +591,7 @@ section
 3.5 Hamburger
 *********************************/
 
-.hamburger_container
-{
 
-}
 .hamburger
 {
 	display: none;
@@ -2114,10 +2091,7 @@ section
 	-o-transition: all 200ms ease;
 	transition: all 200ms ease;
 }
-/* .cr_text a:hover
-{
-	color: #14bdee;
-} */
+
 .cr_list li:not(:last-child)
 {
 	margin-right: 50px;
@@ -2132,7 +2106,3 @@ section
 	-o-transition: all 200ms ease;
 	transition: all 200ms ease;
 }
-/* .cr_list li a:hover
-{
-	color: #14bdee;
-} */

@@ -4,7 +4,7 @@ use App\Config\Database;
 use App\Classes\Tag;
 use PDO;
 
-class tagModel
+class TagModel
 {
     private $conn;
     public function __construct() {        
@@ -42,8 +42,8 @@ class tagModel
 
     public function findById($id) {
         
-        $stmt = $this->conn->prepare("SELECT name FROM tags WHERE id = $id");
-        // $stmt->bindParam('i', $id);
+        $stmt = $this->conn->prepare("SELECT name FROM tags WHERE id = :id");
+        $stmt->bindParam(':id', $id);
         $stmt->execute(); 
         
 

@@ -123,9 +123,6 @@ p
 }
 .course-card .course-footer {
 	display: flex;
-	/* justify-content: space-between; */
-	/* gap: 150px; */
-	/* align-items: center; */
 	padding: 10px 15px;
 	border-top: 1px solid #ddd;
 	margin: 10px 0;
@@ -138,18 +135,7 @@ p
 	font-size: 14px;
 	color: #777;
 }
-.course-card .course-footer .price {
-	font-size: 16px;
-	font-weight: bold;
-	color: #007bff;
-}
-.course-card .course-footer .price.free {
-	color: #28a745;
-}
-.course-card .course-footer .price.old {
-	text-decoration: line-through;
-	color: #999;
-}
+
 p a
 {
 	display: inline;

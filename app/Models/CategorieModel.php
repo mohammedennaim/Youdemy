@@ -42,16 +42,12 @@ class CategorieModel
 
     public function findById($id) {
         
-        $stmt = $this->conn->prepare("SELECT name FROM categories WHERE id = $id");
-        // $stmt->bindParam(':name', $id);
+        $stmt = $this->conn->prepare("SELECT name FROM categories WHERE id = :id");
+        $stmt->bindParam(':id', $id);
         $stmt->execute(); 
-        
-
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
         return $result; 
     }     
-     
     public function ajouterCategorie($name){
         $query = "INSERT INTO categories (name) VALUES (:name);";
         $stmt = $this->conn->prepare($query);
@@ -60,15 +56,13 @@ class CategorieModel
         $stmt->execute();
     }
     public function editCategorie($id, $name){
-        $query = "UPDATE categories SET name = :name where id = $id";
+        $query = "UPDATE categories SET name = :name where id = :id";
         $stmt = $this->conn->prepare($query);
-
         $stmt->bindParam(':name',$name);
+        $stmt->bindParam(':id',$id);
         $stmt->execute();
-
     }
     public function deleteCategorie($id){
-
         $stmt = $this->conn->prepare("DELETE FROM categories WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

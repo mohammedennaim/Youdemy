@@ -31,7 +31,7 @@ class AuthController {
             }
             exit();
         } else {
-            echo "Cette personne n'existe pas.";
+            echo "Email ou password incorrect.";
         }
     }
 

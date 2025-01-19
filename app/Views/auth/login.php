@@ -4,6 +4,7 @@ require_once "../../../vendor/autoload.php";
 use App\Controllers\Auth\AuthController;
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
+  
   if(empty($_POST["email"]) || empty($_POST["password"]))
   {
     echo "email or password is empty";

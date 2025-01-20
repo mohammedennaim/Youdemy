@@ -21,66 +21,86 @@ class CourseModel
         $this->conn = Database::connection();
     }
 
-    public function addCourse($title, $description, $content, $teacher_id, $category_id)
-    {
-        $query = "INSERT INTO courses (title, description, content, teacher_id, category_id) VALUES (:title, :description, :content, :teacher_id, :category_id)";
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':content', $content);
-        $stmt->bindParam(':teacher_id', $teacher_id);
-        $stmt->bindParam(':category_id', $category_id);
-
-        if ($stmt->execute()) {
-            return true;
+    public function addCourse($title, $description, $content, $teacher_id, $category_id) {
+        try {
+            $sql = "INSERT INTO courses (title, description, content, teacher_id, category_id ) 
+            VALUES (:title, :description, :content, :teacher_id, :category_id)";
+            
+            $stmt = $this->conn->prepare($sql);
+            
+            $stmt->bindParam(':title', $title, PDO::PARAM_STR);
+            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':content', $content, PDO::PARAM_STR);
+            $stmt->bindParam(':teacher_id', $teacher_id, PDO::PARAM_INT);
+            $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+            
+            $stmt->execute();
+            
+            return $this->conn->lastInsertId();
+        } catch (PDOException $e) {
+            throw new PDOException("Erreur lors de l'insertion du cours : " . $e->getMessage());
         }
-        return false;
     }
 
-    public function updateCourse($id, $title, $description, $content, $teacher_id, $category_id)
+    public function addCourseTags($courseId, $tagIds)
     {
-        $query = "UPDATE courses SET title = :title, description = :description, content = :content, teacher_id = :teacher_id, category_id = :category_id WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
+        try {
+            $sql = "INSERT INTO course_tag (course_id, tag_id) VALUES (:course_id, :tag_id)";
+            $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':content', $content);
-        $stmt->bindParam(':teacher_id', $teacher_id);
-        $stmt->bindParam(':category_id', $category_id);
-
-        if ($stmt->execute()) {
-            return true;
+            foreach ($tagIds as $tagId) {
+                $stmt->execute([
+                    ':course_id' => $courseId,
+                    ':tag_id' => $tagId,
+                ]);
+            }
+        } catch (PDOException $e) {
+            throw new PDOException("Erreur lors de l'insertion des tags : " . $e->getMessage());
         }
-        return false;
     }
 
-    // public function delete($id) {
-    //     $query = "DELETE FROM enrollments WHERE course_id = :id";
-    //     $stmt = $this->conn->prepare($query);
-    //     $stmt->bindParam(':id', $id);
-    //     $enrollresultat=$stmt->execute();
+    public function updateCourse($courseId, $title, $description, $content, $categorie_id)
+    {
+        try {
+            $sql = "UPDATE courses 
+                    SET title = :title, description = :description, content = :content, category_id = :categorie_id
+                    WHERE id = :courseId";
+            $stmt = $this->conn->prepare($sql);
 
-    //     if ($enrollresultat) {
-    //             $query = "DELETE FROM course_tag WHERE course_id = :id";
-    //             $stmt = $this->conn->prepare($query);
-    //             $stmt->bindParam(':id', $id);
-    //             $tagResultat=$stmt->execute();
+            $stmt->bindParam(':courseId', $courseId, PDO::PARAM_INT);
+            $stmt->bindParam(':title', $title, PDO::PARAM_STR);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':content', $content, PDO::PARAM_STR);
+            $stmt->bindParam(':categorie_id', $categorie_id, PDO::PARAM_INT);
 
-    //         if ($tagResultat) {
-    //             $query = "DELETE FROM courses WHERE id = :id";
-    //             $stmt = $this->conn->prepare($query);
-    //             $stmt->bindParam(':id', $id);
-    //             $courseResultat=$stmt->execute() ;
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            throw new PDOException("Erreur lors de la mise à jour du cours : " . $e->getMessage());
+        }
+    }
+    public function updateCourseTags($courseId, $tagIds)
+    {
+        try {
+            $sql = "DELETE FROM course_tag WHERE course_id = :course_id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':course_id' => $courseId]);
 
-    //             if ($courseResultat) {
-    //                 return true;
-    //             }
-    //             return false;
-    //         }
-    //     }
-    // }
+            $sql = "INSERT INTO course_tag (course_id, tag_id) VALUES (:course_id, :tag_id)";
+            $stmt = $this->conn->prepare($sql);
+
+            $tagIdsArray = is_string($tagIds) ? explode(',', $tagIds) : (array)$tagIds;
+
+            foreach ($tagIdsArray as $tagId) {
+                $stmt->execute([
+                    ':course_id' => $courseId,
+                    ':tag_id' => $tagId,
+                ]);
+            }
+        } catch (PDOException $e) {
+            throw new PDOException("Erreur lors de la mise à jour des tags : " . $e->getMessage());
+        }
+    }
+
     public function delete($id)
     {
 
@@ -122,7 +142,7 @@ class CourseModel
 
     public function getCourseById($id)
     {
-        $query = 'SELECT courses.id, courses.title AS title, courses.description AS description, 
+        $query = 'SELECT courses.*, 
         GROUP_CONCAT(tags.name SEPARATOR ", ") as tags FROM course_tag 
         JOIN tags ON tags.id = course_tag.tag_id 
         JOIN courses ON courses.id = course_tag.course_id WHERE courses.id = :id 
@@ -156,12 +176,73 @@ class CourseModel
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    // public function getTagsForCourse($courseId) {
-    //     $query = "SELECT tag_id FROM course_tag WHERE course_id = :course_id";
-    //     $stmt = $this->conn->prepare($query);
-    //     $stmt->bindParam(':course_id', $courseId, PDO::PARAM_INT);
-    //     $stmt->execute();
-    //     return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-    // }
+
+    public function getAllTags()
+    {
+        $sql = "SELECT * FROM tags";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getCourseTags($courseId)
+    {
+        $sql = "SELECT tag_id FROM course_tag WHERE course_id = :course_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':course_id', $courseId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getById($courseId) {
+        try {
+            $sql = "SELECT 
+                    c.id AS course_id, *
+                    GROUP_CONCAT(t.id SEPARATOR ',') AS tag_ids,
+                    GROUP_CONCAT(t.titre SEPARATOR ',') AS tag_titles
+                FROM 
+                    courses c
+                LEFT JOIN 
+                    categories ON c.categorie_id = categories.id
+                LEFT JOIN 
+                    course_tag ON c.id = course_tag.course_id
+                LEFT JOIN 
+                    tags t ON course_tag.tag_id = t.id
+                WHERE 
+                    c.id = :course_id
+                GROUP BY 
+                    c.id;
+            ";
+            $stmt = $this->conn->prepare($sql);
+            
+            $stmt->execute([':course_id' => $courseId]);
+     
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new PDOException("Erreur lors de la récupération du cours : " . $e->getMessage());
+        }
+    }
+    
+    public function inscrire($course_id, $etudiant_id)
+    {
+        try {
+            $checkSql = "SELECT COUNT(*) FROM enrollments WHERE course_id = :course_id AND etudiant_id = :etudiant_id";
+            $checkStmt = $this->conn->prepare($checkSql);
+            $checkStmt->execute([':course_id' => $course_id, ':etudiant_id' => $etudiant_id]);
+            
+            if ($checkStmt->fetchColumn() > 0) {
+                return "Vous êtes déjà inscrit à ce cours";
+            }
+
+            $sql = "INSERT INTO enrollments (course_id, etudiant_id) VALUES (:course_id, :etudiant_id)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':course_id' => $course_id, ':etudiant_id' => $etudiant_id]);
+            return true;
+        } catch (PDOException $e) {
+            throw new PDOException ("Erreur lors de l'inscription au cours : " . $e->getMessage());
+        }
+    }
 }
 ?>
+

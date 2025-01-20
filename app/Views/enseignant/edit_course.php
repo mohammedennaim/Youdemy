@@ -16,17 +16,12 @@ $categories = $categoryController->allCategories();
 $tags = $tagController->getAllTags();
 
 if (isset($_POST["editCourse"])) {
+
     $courseId = $_GET['id'];
-    $data = [
-        'title' => $_POST['title'],
-        'description' => $_POST['description'],
-        'content' => isset($_POST['content']) ? $_POST['content'] : '' ,
-        'category_id' => $_POST['course_id'],
-        'tags' => isset($_POST['tags']) ? $_POST['tags'] : [] 
-    ];
 
     $courseController = new CourseController();
-    if ($courseController->updateCourse($courseId, $data)) {
+   
+    if ($courseController->updateCourse($courseId, $_POST['title'],$_POST['content'], $_POST['description'],$_POST['category_id'],$_POST['tags_id'])) {
         $_SESSION['success_message'] = "Cours mis à jour avec succès.";
     } else {
         $_SESSION['error_message'] = "Erreur lors de la mise à jour du cours.";
@@ -93,8 +88,8 @@ if (isset($_POST["editCourse"])) {
                                 value='<?php echo $course[0]['description']; ?>' required>
                         </div>
                         <div class="mb-3">
-                            <label for="course_id" class="form-label">Catégorie:</label>
-                            <select class="form-select" id="course_id" name="course_id" required>
+                            <label for="category_id" class="form-label">Catégorie:</label>
+                            <select class="form-select" id="category_id" name="category_id" required>
                                 <option value="">Sélectionner une catégorie</option>
                                 <?php
                                 foreach ($categories as $category): ?>

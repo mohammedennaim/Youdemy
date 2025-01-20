@@ -2,13 +2,16 @@
 namespace App\Controllers\Courses;
 use App\Models\CourseModel;
 use App\Models\Enrollment;
-
+use App\Models\TagModel;
+use PDOException;
 class CourseController
 {
     private $courseModel;
+    private $tagModel;
     public function __construct()
     {
         $this->courseModel = new CourseModel();
+        $this->tagModel = new TagModel();
     }
 
     public function createCourse($postData) {
@@ -19,13 +22,13 @@ class CourseController
         $categorie_id = (int) $postData['category_id']; 
         $selectedTags = isset($postData['tags']) ? $postData['tags'] : [];
 
-        $courseId = $this->courseModel-> addCourse($title, $description, $content, $categorie_id, $enseignant_id);
+        $course = $this->courseModel-> addCourse($title, $description, $content, $enseignant_id, $categorie_id);
 
-        if ($courseId) {
-            $this->courseModel->insertCourseTags($courseId, $selectedTags);
+        if ($course) {
+            $this->courseModel->addCourseTags($courseId, $selectedTags);
         }
 
-        return $courseId;
+        return $course;
     }
 
     public function getAllCourses()
@@ -111,24 +114,17 @@ class CourseController
             exit();
         }
     }
-    public function updateCourse($courseId, $data) {
+
+    public function updateCourse($courseId, $title,  $description, $content, $categorie_id, $tags_ids)
+    {
+        // var_dump($content,$description);
+        // exit();
         try {
-            $updated = $this->courseModel->updateCourse($courseId, [
-                'title' => trim($data['title']),
-                'description' => trim($data['description']),
-                'content' => trim($data['content']),
-                'category_id' => (int) $data['category_id']
-            ]);
-
-            if ($updated) {
-                $selectedTags = isset($data['tags']) ? $data['tags'] : [];
-                $this->courseModel->updateCourseTags($courseId, $selectedTags);
-                return true;
-            }
-
-            return false;
+            $this->courseModel->updateCourseTags($courseId, $tags_ids);
+            return $this->courseModel->updateCourse($courseId, $title, $description, $content, $categorie_id);
+           // return true;
         } catch (\Exception $e) {
-            return 'error ' . $e->getMessage();
+            return 'Erreur : ' . $e->getMessage(); 
         }
     }
 }

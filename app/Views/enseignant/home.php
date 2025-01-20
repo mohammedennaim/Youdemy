@@ -37,18 +37,7 @@ if (isset($_POST["addCourse"])) {
     header("Location: index.php");
     exit();
 }
-// if (isset($_POST["deleteCourse"])) {
-//     $course = new CourseController();
-//     $courseID = $_GET["id"];
-//     $result = $course->deleteCourse($courseID);
-//     var_dump($result);
-//     exit();
-//     if ($result) {
-//         echo "Cours supprimé avec succès.";
-//     } else {
-//         echo "Erreur lors de la suppression du cours.";
-//     }
-// }
+
 if (isset($_POST["deleteCourse"])) {
     $courseID = $_POST["course_id"]; 
     $course = new CourseController();
@@ -62,14 +51,7 @@ if (isset($_POST["deleteCourse"])) {
     exit();
 }
 
-// if (isset($_POST["submit"]) && isset($_POST["deleteCourse"])) {
-//     $result= $course->deleteCourse($_POST[""]);
-//     if ($result) {
-//                 echo "Le cours a été supprimé avec succès.";
-//             } else {
-//                 echo "Échec de la suppression du cours.";
-//             }
-// }
+
 ?>
 
 <!DOCTYPE html>
@@ -181,7 +163,7 @@ if (isset($_POST["deleteCourse"])) {
                         </select>
                     </div>
                     <div>
-                        <a href="./ajouterCourse.php"
+                        <a href="./ajouter_course.php"
                             class="px-4 py-2 mr-5 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                             Ajouter
                         </a>
@@ -306,6 +288,72 @@ if (isset($_POST["deleteCourse"])) {
                     </ul>
                 </div>
             </header>
+            <div class="courses">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="courses_container">
+                                <div class="row courses_row">
+
+                                    <div class="courses">
+                                        <div class="container">
+                                            <div class="row courses_row">
+                                                <?php
+                                                $courseInstance = new CourseController();
+                                                $courses = $courseInstance->getAllCourses();
+                                                // var_dump($courses);
+                                                // exit();
+                                                foreach ($courses as $course) {
+                                                    ?>
+                                                    <div class="course-card">
+
+                                                        <video controls autoplay class="style-video">
+                                                            <source src="<?= $course['content']; ?>" type="video/mp4">
+                                                        </video>
+
+                                                        <div class="course-info">
+                                                            <div class="course-title"><?= $course['title']; ?></div>
+                                                            <div class="course-instructor"><?= $course['teacher_name']; ?>
+                                                            </div>
+                                                            <div class="course-description"><?= $course['description']; ?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="course-footer">
+                                                            <div class="span">
+                                                                <p>🎓 <?= $course['user_count']; ?> Student</p>
+                                                            </div>
+                                                            <div>
+                                                                <form method="POST" action="" style="display: inline;">
+                                                                    <button
+                                                                        class="header_search_button d-flex flex-column align-items-center justify-content-center">
+                                                                        <div class="enroll_button1 trans_200">
+                                                                            <a
+                                                                                href="./edit_course.php?id=<?= $course['id']; ?>">modifier</a>
+                                                                        </div>
+                                                                    </button>
+                                                                    <button type="submit" name="deleteCourse" class="header_search_button d-flex flex-column align-items-center justify-content-center">
+                                                                        <input type="hidden" name="course_id" value="<?= $course['id']; ?>">
+                                                                        <div class="enroll_button2 trans_200"><a>Supprimer</a></div>
+                                                                    </button>
+                                                                </form>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <?php
+                                                    }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div
                 class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
                 <span class="flex items-center col-span-3">
@@ -374,71 +422,6 @@ if (isset($_POST["deleteCourse"])) {
                         </ul>
                     </nav>
                 </span>
-            </div>
-            <div class="courses">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="courses_container">
-                                <div class="row courses_row">
-
-                                    <div class="courses">
-                                        <div class="container">
-                                            <div class="row courses_row">
-                                                <?php
-                                                $courseInstance = new CourseController();
-                                                $courses = $courseInstance->getAllCourses();
-                                                // var_dump($courses);
-                                                // exit();
-                                                foreach ($courses as $course) {
-                                                    ?>
-                                                    <div class="course-card">
-
-                                                        <video controls autoplay class="style-video">
-                                                            <source src="<?= $course['content']; ?>" type="video/mp4">
-                                                        </video>
-
-                                                        <div class="course-info">
-                                                            <div class="course-title"><?= $course['title']; ?></div>
-                                                            <div class="course-instructor"><?= $course['teacher_name']; ?>
-                                                            </div>
-                                                            <div class="course-description"><?= $course['description']; ?>
-                                                            </div>
-                                                        </div>
-                                                        <div class="course-footer">
-                                                            <div class="span">
-                                                                <p>🎓 <?= $course['user_count']; ?> Student</p>
-                                                            </div>
-                                                            <div>
-                                                                <form method="POST" action="" style="display: inline;">
-                                                                    <button
-                                                                        class="header_search_button d-flex flex-column align-items-center justify-content-center">
-                                                                        <div class="enroll_button1 trans_200">
-                                                                            <a
-                                                                                href="./edit_course.php?id=<?= $course['id']; ?>">modifier</a>
-                                                                        </div>
-                                                                    </button>
-                                                                    <button type="submit" name="deleteCourse" class="header_search_button d-flex flex-column align-items-center justify-content-center">
-                                                                        <input type="hidden" name="course_id" value="<?= $course['id']; ?>">
-                                                                        <div class="enroll_button2 trans_200"><a>Supprimer</a></div>
-                                                                    </button>
-                                                                </form>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <br>
-                                                    <?php
-                                                    }
-                                                ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

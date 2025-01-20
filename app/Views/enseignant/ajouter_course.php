@@ -8,11 +8,14 @@ session_start();
 $tagController = new Tag();
 $tags = $tagController->getAllTags();
 
+
 if (isset($_POST["addCourse"])) {
+    
     $titre = $_POST['title'];
     $description = $_POST['description'];
     $content = $_POST['content'];
-    $selectedTags[] = isset($_POST['tags']) ? $_POST['tags'] : [];
+    $selectedTags[] = $_POST['tags'];
+
     $enseignant_id = $_SESSION['id'];
     $categoryId = $_POST['course_id'];
 
@@ -26,9 +29,9 @@ if (isset($_POST["addCourse"])) {
             'category_id' => $categoryId,
             'tagsId' => $selectedTags
         ]);
-        $_SESSION['success_message'] = "Cours créé avec succès. ID : " . $courseId;
+        $_SESSION['success_message'] = "Course créé avec succès.";
     } catch (Exception $e) {
-        $_SESSION['error_message'] = "Erreur lors de la création du cours : " . $e->getMessage();
+        $_SESSION['error_message'] = "Erreur lors de la création du course : " . $e->getMessage();
     }
     header("Location: home.php"); 
     exit();
@@ -100,7 +103,7 @@ if (isset($_POST["addCourse"])) {
                     <div class="mb-3">
                         
                         <label for="tags" class="form-label">Tags:</label>
-                        <select class="form-select" id="tags" name="tags[]" required>
+                        <select class="form-select" id="tags" name="tags[]" multiple required>
                             <option value="">Sélectionner une tag</option>
                             <?php 
                             foreach ($tags as $tag): ?>

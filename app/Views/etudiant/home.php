@@ -1,6 +1,10 @@
 <?php
 require_once "../../../vendor/autoload.php";
 use App\Controllers\Courses\CourseController;
+session_start();
+if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] == "etudiant") {
+	header("location:../auth/login.php");
+}
 if (isset($_POST["logout"])) {
     session_unset();
     session_destroy();
@@ -53,7 +57,10 @@ if (isset($_POST["logout"])) {
 											<div class="dropdown-content">
 												<a href="profile.php">Voir le profil</a>
 												<a href="settings.php">Paramètres</a>
-												<a href="logout.php">Déconnexion</a>
+												
+													<form method="post">
+														<button type="submit" name="logout"><a>Déconnexion</a></button>
+													</form>
 											</div>
 										</li>
 									</ul>

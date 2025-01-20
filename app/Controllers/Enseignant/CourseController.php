@@ -12,14 +12,14 @@ class CourseController
     }
 
     public function createCourse($postData) {
-        $titre = trim($postData['title']);
+        $title = trim($postData['title']);
         $description = trim($postData['description']);
-        $contenu = trim($postData['content']);
+        $content = trim($postData['content']);
         $enseignant_id = (int) $postData['enseignant_id'];
-        $categorie_id = (int) $postData['course_id']; 
+        $categorie_id = (int) $postData['category_id']; 
         $selectedTags = isset($postData['tags']) ? $postData['tags'] : [];
 
-        $courseId = $this->courseModel->insertCourse($titre, $description, $contenu, $categorie_id, $enseignant_id);
+        $courseId = $this->courseModel-> addCourse($title, $description, $content, $categorie_id, $enseignant_id);
 
         if ($courseId) {
             $this->courseModel->insertCourseTags($courseId, $selectedTags);
@@ -40,7 +40,7 @@ class CourseController
 
     public function getCourseById($id){
         try {
-            $course = $this->courseModel->CourseById($id);
+            $course = $this->courseModel->getCourseById($id);
             return $course;
         } catch (\Exception $e) {
             return 'error ' . $e->getMessage();
@@ -70,12 +70,8 @@ class CourseController
     {
         try {
             $result = $this->courseModel->delete($id);
-
-            // if ($result) {
-            //     echo "Le cours a été supprimé avec succès.";
-            // } else {
-            //     echo "Échec de la suppression du cours.";
-            // }
+            return $result;
+            
         } catch (\Exception $e) {
             return 'error ' . $e->getMessage();
         }

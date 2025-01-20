@@ -42,7 +42,7 @@ class AuthController {
         
         if ($userSignUp === null) {
             $userModel->register($name, $email, $password, $role);
-            header("Location: ../$role/home.php");
+            header("Location: ../auth/login.php");
             exit();
         } else {
             echo "Cet email existe déjà.";

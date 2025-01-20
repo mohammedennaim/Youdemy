@@ -5,11 +5,14 @@ use App\Controllers\TagController\Tag;
 use App\Controllers\Courses\CourseController;
 session_start();
 
+$tagController = new Tag();
+$tags = $tagController->getAllTags();
+
 if (isset($_POST["addCourse"])) {
     $titre = $_POST['title'];
     $description = $_POST['description'];
     $content = $_POST['content'];
-    $selectedTags = isset($_POST['tags']) ? $_POST['tags'] : [];
+    $selectedTags[] = isset($_POST['tags']) ? $_POST['tags'] : [];
     $enseignant_id = $_SESSION['id'];
     $categoryId = $_POST['course_id'];
 
@@ -21,7 +24,7 @@ if (isset($_POST["addCourse"])) {
             'content' => $content,
             'enseignant_id' => $enseignant_id,
             'category_id' => $categoryId,
-            'tags' => $selectedTags
+            'tagsId' => $selectedTags
         ]);
         $_SESSION['success_message'] = "Cours créé avec succès. ID : " . $courseId;
     } catch (Exception $e) {
@@ -100,11 +103,9 @@ if (isset($_POST["addCourse"])) {
                         <select class="form-select" id="tags" name="tags[]" required>
                             <option value="">Sélectionner une tag</option>
                             <?php 
-                           $tagController = new Tag();
-                           $tags = $tagController->getAllTags();
                             foreach ($tags as $tag): ?>
-                                <option value="<?php echo $tag['id']; ?>">
-                                    <?php echo $tag['tag']; ?>
+                                <option value="<?php echo $tag->getId(); ?>">
+                                    <?php echo $tag->getName(); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -119,14 +120,12 @@ if (isset($_POST["addCourse"])) {
                             $categories = $categoryController->allCategories();
 
                             foreach ($categories as $category): ?>
-                                <option value="<?php echo $category['id']; ?>">
-                                    <?php echo $category['category']; ?>
+                                <option value="<?php echo $category->getId(); ?>">
+                                    <?php echo $category->getName(); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
-
-                    
 
                     <button type="submit" name="addCourse" class="btn btn-primary w-100">Ajouter le cours</button>
                 </form>

@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] == "etudiant") {
+	header("location:../auth/login.php");
+}
+if (isset($_POST["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: ../auth/login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

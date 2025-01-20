@@ -1,6 +1,16 @@
 <?php
 require_once "../../../vendor/autoload.php";
 use App\Controllers\Courses\CourseController;
+session_start();
+if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] == "etudiant") {
+	header("location:../auth/login.php");
+}
+if (isset($_POST["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: ../auth/login.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -149,7 +159,7 @@ use App\Controllers\Courses\CourseController;
 													</div>
 													<div class="course-footer">
 														<div class="span">
-															<p>🎓 <?= $course['student_count']; ?> Student</p>
+															<p>🎓 <?= $course['user_count']; ?> Student</p>
 														</div>
 														<div>
 															<button

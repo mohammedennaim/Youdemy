@@ -21,7 +21,7 @@ class Tag
 
     public function getCourseById($id){
         try {
-            $course = $this->courseModel->CourseById($id);
+            $course = $this->tagModel->CourseById($id);
             return $course;
         } catch (\Exception $e) {
             return 'error ' . $e->getMessage();
@@ -30,7 +30,7 @@ class Tag
     public function listCoursesbyTags()
     {
         try {
-            $courses = $this->courseModel->getCoursesWithTags();
+            $courses = $this->tagModel->getCoursesWithTags();
             return $courses;
         } catch (\Exception $e) {
             return 'error ' . $e->getMessage();
@@ -41,7 +41,7 @@ class Tag
     public function suppressionCourse($id)
     {
         try {
-            $supprimerCourse = $this->courseModel->supprimerCourse($id);
+            $supprimerCourse = $this->tagModel->supprimerCourse($id);
             return $supprimerCourse;
         } catch (\Exception $e) {
             return 'error ' . $e->getMessage();

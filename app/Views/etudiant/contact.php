@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] == "etudiant") {
+	header("location:../auth/login.php");
+}
+if (isset($_POST["logout"])) {
+    session_unset();
+    session_destroy();
+    header("Location: ../auth/login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,10 +18,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="Unicat project">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="./assets/styles/bootstrap4/bootstrap.min.css">
-<link href="./assets/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="./assets/styles/contact.css">
-<link rel="stylesheet" type="text/css" href="./assets/styles/contact_responsive.css">
+<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/contact.css">
+<link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
 </head>
 <body>
 
@@ -174,7 +186,7 @@
 	<!-- Newsletter -->
 
 	<div class="newsletter">
-		<div class="newsletter_background" style="background-image:url(./assets/images/newsletter_background.jpg)"></div>
+		<div class="newsletter_background" style="background-image:url(images/newsletter_background.jpg)"></div>
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -203,7 +215,7 @@
 	<!-- Footer -->
 
 	<footer class="footer">
-		<div class="footer_background" style="background-image:url(./assets/images/footer_background.png)"></div>
+		<div class="footer_background" style="background-image:url(images/footer_background.png)"></div>
 		<div class="container">
 			<div class="row footer_row">
 				<div class="col">
@@ -277,8 +289,8 @@
 								<div class="footer_section footer_mobile">
 									<div class="footer_title">Mobile</div>
 									<div class="footer_mobile_content">
-										<div class="footer_image"><a href="#"><img src="./assets/images/mobile_1.png" alt=""></a></div>
-										<div class="footer_image"><a href="#"><img src="./assets/images/mobile_2.png" alt=""></a></div>
+										<div class="footer_image"><a href="#"><img src="images/mobile_1.png" alt=""></a></div>
+										<div class="footer_image"><a href="#"><img src="images/mobile_2.png" alt=""></a></div>
 									</div>
 								</div>
 								

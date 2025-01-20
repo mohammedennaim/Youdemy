@@ -37,17 +37,39 @@ if (isset($_POST["addCourse"])) {
     header("Location: index.php");
     exit();
 }
-if (isset($_POST["submit"])) {
+// if (isset($_POST["deleteCourse"])) {
+//     $course = new CourseController();
+//     $courseID = $_GET["id"];
+//     $result = $course->deleteCourse($courseID);
+//     var_dump($result);
+//     exit();
+//     if ($result) {
+//         echo "Cours supprimé avec succès.";
+//     } else {
+//         echo "Erreur lors de la suppression du cours.";
+//     }
+// }
+if (isset($_POST["deleteCourse"])) {
+    $courseID = $_POST["course_id"]; 
     $course = new CourseController();
-    $courseID = $_GET["id"];
-    // var_dump($_GET["id"]);
-    // exit();
-    if ($course->deleteCourse($courseID)) {
-        echo "Cours supprimé avec succès.";
+    $result = $course->deleteCourse($courseID);
+    if ($result) {
+        $_SESSION['success_message'] = "Cours supprimé avec succès.";
     } else {
-        echo "Erreur lors de la suppression du cours.";
+        $_SESSION['error_message'] = "Erreur lors de la suppression du cours.";
     }
+    header("Location: index.php"); 
+    exit();
 }
+
+// if (isset($_POST["submit"]) && isset($_POST["deleteCourse"])) {
+//     $result= $course->deleteCourse($_POST[""]);
+//     if ($result) {
+//                 echo "Le cours a été supprimé avec succès.";
+//             } else {
+//                 echo "Échec de la suppression du cours.";
+//             }
+// }
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +78,7 @@ if (isset($_POST["submit"])) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Youdemy</title>
+    <title>Youdemy-EN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
 
@@ -388,29 +410,26 @@ if (isset($_POST["submit"])) {
                                                                 <p>🎓 <?= $course['user_count']; ?> Student</p>
                                                             </div>
                                                             <div>
-                                                                <button
-                                                                    class="header_search_button d-flex flex-column align-items-center justify-content-center">
-                                                                    <div class="enroll_button1 trans_200">
-                                                                        <a
-                                                                            href="./edit_course.php?id=<?= $course['id']; ?>">modifier</a>
-                                                                    </div>
-                                                                </button>
-                                                                <button
-                                                                type="submit"
-                                                                name="submit"
-                                                                    class="header_search_button d-flex flex-column align-items-center justify-content-center">
-                                                                    <div class="enroll_button2 trans_200">
-                                                                        <a
-                                                                            href="./courses.php?id=<?= $course['id'] ?>">Supprimer</a>
-                                                                    </div>
-                                                                </button>
+                                                                <form method="POST" action="" style="display: inline;">
+                                                                    <button
+                                                                        class="header_search_button d-flex flex-column align-items-center justify-content-center">
+                                                                        <div class="enroll_button1 trans_200">
+                                                                            <a
+                                                                                href="./edit_course.php?id=<?= $course['id']; ?>">modifier</a>
+                                                                        </div>
+                                                                    </button>
+                                                                    <button type="submit" name="deleteCourse" class="header_search_button d-flex flex-column align-items-center justify-content-center">
+                                                                        <input type="hidden" name="course_id" value="<?= $course['id']; ?>">
+                                                                        <div class="enroll_button2 trans_200"><a>Supprimer</a></div>
+                                                                    </button>
+                                                                </form>
 
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <br>
                                                     <?php
-                                                }
+                                                    }
                                                 ?>
                                             </div>
                                         </div>

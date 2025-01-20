@@ -8,11 +8,11 @@ session_start();
 $courseId = $_GET['id'];
 
 $courseController = new CourseController();
-$course = $courseController->getCourseById($courseId);
-
-
-
+$categoryController = new CategorieControllers();
 $tagController = new Tag();
+
+$course = $courseController->getCourseById($courseId);
+$categories = $categoryController->allCategories();
 $tags = $tagController->getAllTags();
 
 if (isset($_POST["editCourse"])) {
@@ -20,9 +20,9 @@ if (isset($_POST["editCourse"])) {
     $data = [
         'title' => $_POST['title'],
         'description' => $_POST['description'],
-        'content' => $_POST['content'],
+        'content' => isset($_POST['content']) ? $_POST['content'] : '' ,
         'category_id' => $_POST['course_id'],
-        'tags' => isset($_POST['tags']) ? $_POST['tags'] : []
+        'tags' => isset($_POST['tags']) ? $_POST['tags'] : [] 
     ];
 
     $courseController = new CourseController();
@@ -84,43 +84,36 @@ if (isset($_POST["editCourse"])) {
                         </div>
                         <div class="mb-3">
                             <label for="content" class="form-label">URL de vidéo:</label>
-                            <input type="text" class="form-control" id="content" name="content" value='<?php
-                            $courseContent = isset($course[0]['content']) ? $course[0]['content'] : '';
-                            echo htmlspecialchars($courseContent); ?>' required>
+                            <input type="text" class="form-control" id="content" name="content"
+                                value='<?php echo $course[0]['content']; ?>' required>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Description:</label>
-                            <input type="text" class="form-control" id="description" name="description" value='<?php
-                            $courseContent = isset($course[0]['content']) ? $course[0]['content'] : '';
-                            echo htmlspecialchars($course[0]['description']); ?>' required>
+                            <input type="text" class="form-control" id="description" name="description"
+                                value='<?php echo $course[0]['description']; ?>' required>
                         </div>
                         <div class="mb-3">
                             <label for="course_id" class="form-label">Catégorie:</label>
                             <select class="form-select" id="course_id" name="course_id" required>
                                 <option value="">Sélectionner une catégorie</option>
-                                <?php 
-                                $categoryController = new CategorieControllers();
-                                $categories = $categoryController->allCategories();
+                                <?php
                                 foreach ($categories as $category): ?>
-                                    <option value="<?php echo $category['id']; ?>" <?php echo $category['id'] == $course[0]['category_id'] ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($category['category']); ?>
+                                    <option value="<?php echo $category->getId(); ?>">
+                                        <?php echo $category->getName(); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="tags" class="form-label">Tags:</label>
                             <select class="form-select" id="tags" name="tags[]" multiple required>
                                 <?php foreach ($tags as $tag): ?>
-                                    <option value="<?php echo $tag['id']; ?>" <?php echo in_array($tag['id'], $course[0]['tags']) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($tag['tag']); ?>
+                                    <option value="<?php echo $tag->getId(); ?>">
+                                        <?php echo $tag->getName(); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
-                        
 
                         <button type="submit" name="editCourse" class="btn btn-primary w-100">Mettre à jour le
                             cours</button>

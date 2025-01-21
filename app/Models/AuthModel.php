@@ -8,13 +8,9 @@ use App\Config\Database;
 use PDO;
 
 class AuthModel {
-    private $conn;
-class AuthModel {
+   
     private $conn;
 
-    public function __construct() {
-        $this->conn = Database::connection();
-    }
     public function __construct() {
         $this->conn = Database::connection();
     }
@@ -29,10 +25,9 @@ class AuthModel {
      $row = $stmt->fetch(PDO::FETCH_ASSOC);
  
      if (!$row) {
-         return null; // Aucun utilisateur trouvé avec cet email
+         return null; 
      }
  
-     // Vérifiez le mot de passe
      if (password_verify($password, $row["password"])) {
          switch ($row["role"]) {
              case "administrateur":
@@ -63,6 +58,7 @@ class AuthModel {
         $stmt->bindParam(':password', $hash);
         $stmt->bindParam(':role', $role);
         $stmt->bindParam(':status', $status);
+    
 
         if ($stmt->execute()) {
             $userId = $this->conn->lastInsertId();
@@ -81,21 +77,13 @@ class AuthModel {
         }
         return null;
     }
-        if ($stmt->execute()) {
-            $userId = $this->conn->lastInsertId();
-            switch ($role) {
-                case "administrateur":
-                    return new Administrateur($userId, $name, $email, $hash, $role);
-                case "enseignant":
-                    return new Enseignant($userId, $email, $hash, $name, $role);
-                case "etudiant":
-                    return new Etudiant($userId, $email, $hash, $name, $role);
-                default:
-                    header("Location: login.php");
-                    break;
-            }
-            exit();
-        }
-        return null;
-    }
+    public function getUserStatus($userId) {
+      $query = "SELECT status FROM users WHERE id = :id";
+      $stmt = $this->conn->prepare($query);
+      $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+      $stmt->execute();
+  
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row ? $row['status'] : null;
+  }
 }

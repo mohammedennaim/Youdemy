@@ -270,7 +270,7 @@ if (isset($_POST["logout"])) {
 							</div>
 							<div class="course-footer">
 								<div class="span">
-									<p>🎓 <?= $courses[$i]['student_count']; ?> Etudiant</p>
+									<p>🎓 <?= $courses[$i]['user_count']; ?> Etudiant</p>
 								</div>
 								<div>
 									<button

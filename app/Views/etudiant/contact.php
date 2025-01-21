@@ -4,9 +4,11 @@ if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] =
 	header("location:../auth/login.php");
 }
 if (isset($_POST["logout"])) {
+    $role = $_SESSION["role"];
+    session_name('session_' . $role);
     session_unset();
     session_destroy();
-    header("Location: ../auth/login.php");
+    header("Location: ../../../auth/login.php");
     exit();
 }
 ?>
@@ -16,7 +18,7 @@ if (isset($_POST["logout"])) {
 <title>Contact</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="Unicat project">
+<meta name="description" content="Academy project">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
 <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">

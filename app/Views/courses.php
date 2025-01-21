@@ -1,17 +1,24 @@
 <?php
-require_once "../../../vendor/autoload.php";
+require_once "../../vendor/autoload.php";
 use App\Controllers\Courses\CourseController;
+use App\Controllers\Admin\CategorieControllers;
+use App\Controllers\Admin\TagControllers;
+
+$categorie = new CategorieControllers();
+$categories = $categorie->allCategories();
+
+$tag = new TagControllers();
+$tags = $tag->allTags();
+
 session_start();
 if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] == "etudiant") {
 	header("location:../auth/login.php");
 }
 if (isset($_POST["logout"])) {
-    $role = $_SESSION["role"];
-    session_name('session_' . $role);
-    session_unset();
-    session_destroy();
-    header("Location: ../../../auth/login.php");
-    exit();
+	session_unset();
+	session_destroy();
+	header("Location: ../auth/login.php");
+	exit();
 }
 ?>
 
@@ -24,21 +31,21 @@ if (isset($_POST["logout"])) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="Academy project">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
-	<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	<link href="plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-	<link rel="stylesheet" type="text/css" href="styles/courses.css">
-	<link rel="stylesheet" type="text/css" href="styles/main_styles.css">
-	<link rel="stylesheet" type="text/css" href="styles/courses_responsive.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/styles/bootstrap4/bootstrap.min.css">
+	<link href="./etudiant/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="./etudiant/plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/plugins/OwlCarousel2-2.2.1/animate.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/styles/courses.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/styles/main_styles.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/styles/courses_responsive.css">
 </head>
 
 <body>
 
 	<div class="super_container">
-	<header class="header">
+		<header class="header">
 			<div class="header_container">
 				<div class="container">
 					<div class="row">
@@ -55,7 +62,6 @@ if (isset($_POST["logout"])) {
 										<li><a href="about.php">About</a></li>
 										<li class="active"><a href="courses.php">Courses</a></li>
 										<li><a href="blog.php">Blog</a></li>
-										<li><a href="contact.php">Contact</a></li>
 										<li class="dropdown">
 											<a href="#" class="dropbtn">Profil</a>
 											<div class="dropdown-content">
@@ -89,15 +95,15 @@ if (isset($_POST["logout"])) {
 					</button>
 				</form>
 			</div>
-			
+
 		</div>
 
 
 		<!-- Courses -->
-		 <br>
-		 <br>
-		 <br>
-		 <br>
+		<br>
+		<br>
+		<br>
+		<br>
 
 		<div class="courses">
 			<div class="container">
@@ -106,17 +112,29 @@ if (isset($_POST["logout"])) {
 					<!-- Courses Main Content -->
 					<div class="col-lg-8">
 						<div class="courses_search_container">
-							<form action="#" id="courses_search_form"
+							<form action="#" method="GET" id="courses_search_form"
 								class="courses_search_form d-flex flex-row align-items-center justify-content-start">
-								<input type="search" class="courses_search_input" placeholder="Search Courses"
-									required="required">
-								<select id="courses_search_select" class="courses_search_select courses_search_input">
-									<option>All Categories</option>
-									<option>Category</option>
-									<option>Category</option>
-									<option>Category</option>
+								<input type="search" name="search" class="courses_search_input"
+									placeholder="Search Courses" required>
+								<select id="courses_search_select" name="search_category"
+									class="courses_search_select courses_search_input">
+									<option value="">All Categories</option>
+									<?php foreach ($categories as $category) { ?>
+										<option value="<?php echo $category->getId(); ?>">
+											<?php echo $category->getName(); ?>
+										</option>
+									<?php } ?>
 								</select>
-								<button action="submit" class="courses_search_button ml-auto">search now</button>
+								<select id="courses_search_select" name="search_category"
+									class="courses_search_select courses_search_input">
+									<option value="">All Tags</option>
+									<?php foreach ($tags as $tag) { ?>
+										<option value="<?php echo $tag->getId(); ?>">
+											<?php echo $tag->getName(); ?>
+										</option>
+									<?php } ?>
+								</select>
+								<button type="submit" class="courses_search_button ml-auto">search now</button>
 							</form>
 						</div>
 						<div class="courses_container">
@@ -124,7 +142,8 @@ if (isset($_POST["logout"])) {
 
 								<div class="courses">
 									<div class="section_background parallax-window" data-parallax="scroll"
-										data-image-src="images/courses_background.jpg" data-speed="0.8"></div>
+										data-image-src="./etudiant/images/courses_background.jpg" data-speed="0.8">
+									</div>
 									<div class="container">
 										<div class="row">
 											<div class="col">
@@ -137,20 +156,20 @@ if (isset($_POST["logout"])) {
 													</div>
 												</div>
 											</div>
-										</div>  
+										</div>
 
 										<div class="row courses_row">
 											<?php
 											$courseInstance = new CourseController();
 											$courses = $courseInstance->getAllCourses();
-											
-											foreach ($courses as $course){
+
+											foreach ($courses as $course) {
 												?>
-												
+
 												<div class="course-card">
 
 													<video controls autoplay class="style-video">
-														<source src="../assets/videos/video.mp4" type="video/mp4">
+														<source src="./assets/videos/video.mp4" type="video/mp4">
 													</video>
 													<div class="course-info">
 														<div class="course-title"><?= $course['title']; ?></div>
@@ -178,7 +197,7 @@ if (isset($_POST["logout"])) {
 											?>
 
 										</div>
-										
+
 									</div>
 								</div>
 
@@ -224,11 +243,9 @@ if (isset($_POST["logout"])) {
 								<div class="sidebar_section_title">Categories</div>
 								<div class="sidebar_categories">
 									<ul>
-										<li><a href="#">Art & Design</a></li>
-										<li><a href="#">Business</a></li>
-										<li><a href="#">IT & Software</a></li>
-										<li><a href="#">Languages</a></li>
-										<li><a href="#">Programming</a></li>
+										<?php foreach ($categories as $category) { ?>
+											<li><a href=""><?php echo $category->getName(); ?></a></li>
+										<?php } ?>
 									</ul>
 								</div>
 							</div>
@@ -241,7 +258,7 @@ if (isset($_POST["logout"])) {
 									<!-- Latest Course -->
 									<div class="latest d-flex flex-row align-items-start justify-content-start">
 										<div class="latest_image">
-											<div><img src="images/latest_1.jpg" alt=""></div>
+											<div><img src="./etudiant/images/latest_1.jpg" alt=""></div>
 										</div>
 										<div class="latest_content">
 											<div class="latest_title"><a href="course.html">How to Design a Logo a
@@ -253,7 +270,7 @@ if (isset($_POST["logout"])) {
 									<!-- Latest Course -->
 									<div class="latest d-flex flex-row align-items-start justify-content-start">
 										<div class="latest_image">
-											<div><img src="images/latest_2.jpg" alt=""></div>
+											<div><img src="./etudiant/images/latest_2.jpg" alt=""></div>
 										</div>
 										<div class="latest_content">
 											<div class="latest_title"><a href="course.html">Photography for Beginners
@@ -265,7 +282,7 @@ if (isset($_POST["logout"])) {
 									<!-- Latest Course -->
 									<div class="latest d-flex flex-row align-items-start justify-content-start">
 										<div class="latest_image">
-											<div><img src="images/latest_3.jpg" alt=""></div>
+											<div><img src="./etudiant/images/latest_3.jpg" alt=""></div>
 										</div>
 										<div class="latest_content">
 											<div class="latest_title"><a href="course.html">The Secrets of Body
@@ -287,48 +304,48 @@ if (isset($_POST["logout"])) {
 											<div
 												class="gallery_item_overlay d-flex flex-column align-items-center justify-content-center">
 												+</div>
-											<a class="colorbox" href="images/gallery_1_large.jpg">
-												<img src="images/gallery_1.jpg" alt="">
+											<a class="colorbox" href="./etudiant/images/gallery_1_large.jpg">
+												<img src="./etudiant/images/gallery_1.jpg" alt="">
 											</a>
 										</li>
 										<li class="gallery_item">
 											<div
 												class="gallery_item_overlay d-flex flex-column align-items-center justify-content-center">
 												+</div>
-											<a class="colorbox" href="images/gallery_2_large.jpg">
-												<img src="images/gallery_2.jpg" alt="">
+											<a class="colorbox" href="./etudiant/images/gallery_2_large.jpg">
+												<img src="./etudiant/images/gallery_2.jpg" alt="">
 											</a>
 										</li>
 										<li class="gallery_item">
 											<div
 												class="gallery_item_overlay d-flex flex-column align-items-center justify-content-center">
 												+</div>
-											<a class="colorbox" href="images/gallery_3_large.jpg">
-												<img src="images/gallery_3.jpg" alt="">
+											<a class="colorbox" href="./etudiant/images/gallery_3_large.jpg">
+												<img src="./etudiant/images/gallery_3.jpg" alt="">
 											</a>
 										</li>
 										<li class="gallery_item">
 											<div
 												class="gallery_item_overlay d-flex flex-column align-items-center justify-content-center">
 												+</div>
-											<a class="colorbox" href="images/gallery_4_large.jpg">
-												<img src="images/gallery_4.jpg" alt="">
+											<a class="colorbox" href="./etudiant/images/gallery_4_large.jpg">
+												<img src="./etudiant/images/gallery_4.jpg" alt="">
 											</a>
 										</li>
 										<li class="gallery_item">
 											<div
 												class="gallery_item_overlay d-flex flex-column align-items-center justify-content-center">
 												+</div>
-											<a class="colorbox" href="images/gallery_5_large.jpg">
-												<img src="images/gallery_5.jpg" alt="">
+											<a class="colorbox" href="./etudiant/images/gallery_5_large.jpg">
+												<img src="./etudiant/images/gallery_5.jpg" alt="">
 											</a>
 										</li>
 										<li class="gallery_item">
 											<div
 												class="gallery_item_overlay d-flex flex-column align-items-center justify-content-center">
 												+</div>
-											<a class="colorbox" href="images/gallery_6_large.jpg">
-												<img src="images/gallery_6.jpg" alt="">
+											<a class="colorbox" href="./etudiant/images/gallery_6_large.jpg">
+												<img src="./etudiant/images/gallery_6.jpg" alt="">
 											</a>
 										</li>
 									</ul>
@@ -340,12 +357,9 @@ if (isset($_POST["logout"])) {
 								<div class="sidebar_section_title">Tags</div>
 								<div class="sidebar_tags">
 									<ul class="tags_list">
-										<li><a href="#">creative</a></li>
-										<li><a href="#">unique</a></li>
-										<li><a href="#">photography</a></li>
-										<li><a href="#">ideas</a></li>
-										<li><a href="#">wordpress</a></li>
-										<li><a href="#">startup</a></li>
+										<?php foreach ($tags as $tag) { ?>
+											<li><a href=""><?php echo $tag->getName(); ?></a></li>
+										<?php } ?>
 									</ul>
 								</div>
 							</div>
@@ -355,7 +369,7 @@ if (isset($_POST["logout"])) {
 								<div
 									class="sidebar_banner d-flex flex-column align-items-center justify-content-center text-center">
 									<div class="sidebar_banner_background"
-										style="background-image:url(images/banner_1.jpg)"></div>
+										style="background-image:url(./etudiant/images/banner_1.jpg)"></div>
 									<div class="sidebar_banner_overlay"></div>
 									<div class="sidebar_banner_content">
 										<div class="banner_title">Free Book</div>
@@ -373,7 +387,7 @@ if (isset($_POST["logout"])) {
 
 		<div class="newsletter">
 			<div class="newsletter_background parallax-window" data-parallax="scroll"
-				data-image-src="images/newsletter.jpg" data-speed="0.8"></div>
+				data-image-src="./etudiant/images/newsletter.jpg" data-speed="0.8"></div>
 			<div class="container">
 				<div class="row">
 					<div class="col">
@@ -406,7 +420,7 @@ if (isset($_POST["logout"])) {
 		<!-- Footer -->
 
 		<footer class="footer">
-			<div class="footer_background" style="background-image:url(images/footer_background.png)"></div>
+			<div class="footer_background" style="background-image:url(./etudiant/images/footer_background.png)"></div>
 			<div class="container">
 				<div class="row footer_row">
 					<div class="col">
@@ -484,10 +498,10 @@ if (isset($_POST["logout"])) {
 									<div class="footer_section footer_mobile">
 										<div class="footer_title">Mobile</div>
 										<div class="footer_mobile_content">
-											<div class="footer_image"><a href="#"><img src="images/mobile_1.png"
-														alt=""></a></div>
-											<div class="footer_image"><a href="#"><img src="images/mobile_2.png"
-														alt=""></a></div>
+											<div class="footer_image"><a href="#"><img
+														src="./etudiant/images/mobile_1.png" alt=""></a></div>
+											<div class="footer_image"><a href="#"><img
+														src="./etudiant/images/mobile_2.png" alt=""></a></div>
 										</div>
 									</div>
 
@@ -523,29 +537,29 @@ if (isset($_POST["logout"])) {
 		</footer>
 	</div>
 
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="styles/bootstrap4/popper.js"></script>
-	<script src="styles/bootstrap4/bootstrap.min.js"></script>
-	<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-	<script src="plugins/easing/easing.js"></script>
-	<script src="plugins/parallax-js-master/parallax.min.js"></script>
-	<script src="plugins/colorbox/jquery.colorbox-min.js"></script>
-	<script src="js/courses.js"></script>
-	
+	<script src="./etudiant/js/jquery-3.2.1.min.js"></script>
+	<script src="./etudiant/styles/bootstrap4/popper.js"></script>
+	<script src="./etudiant/styles/bootstrap4/bootstrap.min.js"></script>
+	<script src="./etudiant/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+	<script src="./etudiant/plugins/easing/easing.js"></script>
+	<script src="./etudiant/plugins/parallax-js-master/parallax.min.js"></script>
+	<script src="./etudiant/plugins/colorbox/jquery.colorbox-min.js"></script>
+	<script src="./etudiant/js/courses.js"></script>
+
 	<script>
-    const profileMenuButton = document.getElementById('profileMenuButton');
-    const profileMenu = document.getElementById('profileMenu');
+		const profileMenuButton = document.getElementById('profileMenuButton');
+		const profileMenu = document.getElementById('profileMenu');
 
-    profileMenuButton.addEventListener('click', () => {
-        profileMenu.classList.toggle('hidden');
-    });
+		profileMenuButton.addEventListener('click', () => {
+			profileMenu.classList.toggle('hidden');
+		});
 
-    window.addEventListener('click', (e) => {
-        if (!profileMenuButton.contains(e.target) && !profileMenu.contains(e.target)) {
-            profileMenu.classList.add('hidden');
-        }
-    });
-</script>
+		window.addEventListener('click', (e) => {
+			if (!profileMenuButton.contains(e.target) && !profileMenu.contains(e.target)) {
+				profileMenu.classList.add('hidden');
+			}
+		});
+	</script>
 </body>
 
 </html>

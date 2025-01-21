@@ -1,16 +1,14 @@
 <?php
-require_once "../../../vendor/autoload.php";
+require_once "../../vendor/autoload.php";
 use App\Controllers\Courses\CourseController;
 session_start();
-if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] == "etudiant") {
-    header("Location: ../home.php");
-}
+$courseInstance = new CourseController();
+$courses = $courseInstance->getAllCourses();
+
 if (isset($_POST["logout"])) {
-    $role = $_SESSION["role"];
-    session_name('session_' . $role);
     session_unset();
     session_destroy();
-    header("Location: ../../../auth/login.php");
+    header("Location: auth/login.php");
     exit();
 }
 ?>
@@ -24,14 +22,14 @@ if (isset($_POST["logout"])) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="Academy project">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
-	<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-	<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-	<link rel="stylesheet" type="text/css" href="styles/main_styles.css">
-	<link rel="stylesheet" type="text/css" href="styles/responsive.css">
-	
+	<link rel="stylesheet" type="text/css" href="./etudiant/styles/bootstrap4/bootstrap.min.css">
+	<link href="./etudiant/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/plugins/OwlCarousel2-2.2.1/animate.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/styles/main_styles.css">
+	<link rel="stylesheet" type="text/css" href="./etudiant/styles/responsive.css">
+
 </head>
 
 <body>
@@ -47,24 +45,30 @@ if (isset($_POST["logout"])) {
 										<div class="logo_text"><span>Aca</span>demy</div>
 									</a>
 								</div>
+								
+
 								<nav class="main_nav_contaner ml-auto">
 									<ul class="main_nav">
 										<li class="active"><a href="home.php">Home</a></li>
 										<li><a href="about.php">About</a></li>
 										<li><a href="courses.php">Courses</a></li>
 										<li><a href="blog.php">Blog</a></li>
-										<li><a href="contact.php">Contact</a></li>
-										<li class="dropdown">
-											<a href="#" class="dropbtn">Profil</a>
-											<div class="dropdown-content">
-												<a href="profile.php">Voir le profil</a>
-												<a href="settings.php">Paramètres</a>
-												
+										<?php if (isset($_SESSION["id"]) && isset($_SESSION["role"])): ?>
+											<li class="dropdown">
+												<a href="#" class="dropbtn">Profil</a>
+												<div class="dropdown-content">
+													<a href="profile.php">Voir le profil</a>
+													<a href="settings.php">Paramètres</a>
 													<form method="post">
-														<button type="submit" name="logout"><a>Déconnexion</a></button>
+														<button type="submit" name="logout"
+															class="logout-button">Déconnexion</button>
 													</form>
-											</div>
-										</li>
+												</div>
+											</li>
+										<?php else: ?>
+											<li><a href="./auth/login.php">Login</a></li>
+											<li><a href="./auth/register.php">Register</a></li>
+										<?php endif; ?>
 									</ul>
 								</nav>
 							</div>
@@ -78,7 +82,8 @@ if (isset($_POST["logout"])) {
 			<div class="home_slider_container">
 				<div class="owl-carousel owl-theme home_slider">
 					<div class="owl-item">
-						<div class="home_slider_background" style="background-image:url(images/home_slider_1.jpg)">
+						<div class="home_slider_background"
+							style="background-image:url(./etudiant/images/home_slider_1.jpg)">
 						</div>
 						<div class="home_slider_content">
 							<div class="container">
@@ -112,7 +117,8 @@ if (isset($_POST["logout"])) {
 						</div>
 					</div>
 					<div class="owl-item">
-						<div class="home_slider_background" style="background-image:url(images/home_slider_1.jpg)">
+						<div class="home_slider_background"
+							style="background-image:url(./etudiant/images/home_slider_1.jpg)">
 						</div>
 						<div class="home_slider_content">
 							<div class="container">
@@ -146,7 +152,8 @@ if (isset($_POST["logout"])) {
 						</div>
 					</div>
 					<div class="owl-item">
-						<div class="home_slider_background" style="background-image:url(images/home_slider_1.jpg)">
+						<div class="home_slider_background"
+							style="background-image:url(./etudiant/images/home_slider_1.jpg)">
 						</div>
 						<div class="home_slider_content">
 							<div class="container">
@@ -200,7 +207,7 @@ if (isset($_POST["logout"])) {
 				<div class="row features_row">
 					<div class="col-lg-3 feature_col">
 						<div class="feature text-center trans_400">
-							<div class="feature_icon"><img src="images/icon_1.png" alt=""></div>
+							<div class="feature_icon"><img src="./etudiant/images/icon_1.png" alt=""></div>
 							<h3 class="feature_title">The Experts</h3>
 							<div class="feature_text">
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
@@ -209,7 +216,7 @@ if (isset($_POST["logout"])) {
 					</div>
 					<div class="col-lg-3 feature_col">
 						<div class="feature text-center trans_400">
-							<div class="feature_icon"><img src="images/icon_2.png" alt=""></div>
+							<div class="feature_icon"><img src="./etudiant/images/icon_2.png" alt=""></div>
 							<h3 class="feature_title">Book & Library</h3>
 							<div class="feature_text">
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
@@ -218,7 +225,7 @@ if (isset($_POST["logout"])) {
 					</div>
 					<div class="col-lg-3 feature_col">
 						<div class="feature text-center trans_400">
-							<div class="feature_icon"><img src="images/icon_3.png" alt=""></div>
+							<div class="feature_icon"><img src="./etudiant/images/icon_3.png" alt=""></div>
 							<h3 class="feature_title">Best Courses</h3>
 							<div class="feature_text">
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
@@ -227,7 +234,7 @@ if (isset($_POST["logout"])) {
 					</div>
 					<div class="col-lg-3 feature_col">
 						<div class="feature text-center trans_400">
-							<div class="feature_icon"><img src="images/icon_4.png" alt=""></div>
+							<div class="feature_icon"><img src="./etudiant/images/icon_4.png" alt=""></div>
 							<h3 class="feature_title">Award & Reward</h3>
 							<div class="feature_text">
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
@@ -239,7 +246,7 @@ if (isset($_POST["logout"])) {
 		</div>
 		<div class="courses">
 			<div class="section_background parallax-window" data-parallax="scroll"
-				data-image-src="images/courses_background.jpg" data-speed="0.8"></div>
+				data-image-src="./etudiant/images/courses_background.jpg" data-speed="0.8"></div>
 			<div class="container">
 				<div class="row">
 					<div class="col">
@@ -261,7 +268,7 @@ if (isset($_POST["logout"])) {
 						?>
 						<div class="course-card">
 							<video controls autoplay class="style-video">
-								<source src="<?= $courses[$i]['content']; ?>" type="video/mp4">
+								<source src="./etudiant/<?= $courses[$i]['content']; ?>" type="video/mp4">
 							</video>
 							<div class="course-info">
 								<div class="course-title"><?= $courses[$i]['title']; ?></div>
@@ -291,7 +298,8 @@ if (isset($_POST["logout"])) {
 				</div>
 			</div>
 			<div class="counter">
-				<div class="counter_background" style="background-image:url(images/counter_background.jpg)"></div>
+				<div class="counter_background" style="background-image:url(./etudiant/images/counter_background.jpg)">
+				</div>
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-6">
@@ -369,7 +377,7 @@ if (isset($_POST["logout"])) {
 					<div class="row events_row">
 						<div class="col-lg-4 event_col">
 							<div class="event event_left">
-								<div class="event_image"><img src="images/event_1.jpg" alt=""></div>
+								<div class="event_image"><img src="./etudiant/images/event_1.jpg" alt=""></div>
 								<div class="event_body d-flex flex-row align-items-start justify-content-start">
 									<div class="event_date">
 										<div
@@ -398,7 +406,7 @@ if (isset($_POST["logout"])) {
 						</div>
 						<div class="col-lg-4 event_col">
 							<div class="event event_mid">
-								<div class="event_image"><img src="images/event_2.jpg" alt=""></div>
+								<div class="event_image"><img src="./etudiant/images/event_2.jpg" alt=""></div>
 								<div class="event_body d-flex flex-row align-items-start justify-content-start">
 									<div class="event_date">
 										<div
@@ -427,7 +435,7 @@ if (isset($_POST["logout"])) {
 						</div>
 						<div class="col-lg-4 event_col">
 							<div class="event event_right">
-								<div class="event_image"><img src="images/event_3.jpg" alt=""></div>
+								<div class="event_image"><img src="./etudiant/images/event_3.jpg" alt=""></div>
 								<div class="event_body d-flex flex-row align-items-start justify-content-start">
 									<div class="event_date">
 										<div
@@ -460,12 +468,12 @@ if (isset($_POST["logout"])) {
 			</div>
 			<div class="team">
 				<div class="team_background parallax-window" data-parallax="scroll"
-					data-image-src="images/team_background.jpg" data-speed="0.8"></div>
+					data-image-src="./etudiant/images/team_background.jpg" data-speed="0.8"></div>
 				<div class="container">
 					<div class="row">
 						<div class="col">
 							<div class="section_title_container text-center">
-								<h2 class="section_title">The Best Tutors in School</h2>
+								<h2 class="section_title">The Best Teacher in School</h2>
 								<div class="section_subtitle">
 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel gravida arcu.
 										Vestibulum feugiat, sapien ultrices fermentum congue, quam velit venenatis sem
@@ -476,13 +484,11 @@ if (isset($_POST["logout"])) {
 					</div>
 					<div class="row team_row">
 						<?php
-						$courseInstance = new CourseController();
-						$courses = $courseInstance->getAllCourses();
 						for ($i = 0; $i < 4; $i++) {
 							?>
 							<div class="col-lg-3 col-md-6 team_col">
 								<div class="team_item">
-									<div class="team_image"><img src="images/team_2.jpg" alt=""></div>
+									<div class="team_image"><img src="./etudiant/images/team_2.jpg" alt=""></div>
 									<div class="team_body">
 
 										<div class="team_title"><a href="#"><?= $courses[$i]['teacher_name']; ?></a></div>
@@ -522,7 +528,7 @@ if (isset($_POST["logout"])) {
 						<div class="col-lg-7 news_col">
 							<div class="news_post_large_container">
 								<div class="news_post_large">
-									<div class="news_post_image"><img src="images/news_1.jpg" alt=""></div>
+									<div class="news_post_image"><img src="./etudiant/images/news_1.jpg" alt=""></div>
 									<div class="news_post_large_title"><a href="blog_single.php">Here’s What You Need to
 											Know About Online Testing for the ACT and SAT</a></div>
 									<div class="news_post_meta">
@@ -589,7 +595,7 @@ if (isset($_POST["logout"])) {
 			</div>
 			<div class="newsletter">
 				<div class="newsletter_background parallax-window" data-parallax="scroll"
-					data-image-src="images/newsletter.jpg" data-speed="0.8"></div>
+					data-image-src="./etudiant/images/newsletter.jpg" data-speed="0.8"></div>
 				<div class="container">
 					<div class="row">
 						<div class="col">
@@ -615,7 +621,8 @@ if (isset($_POST["logout"])) {
 				</div>
 			</div>
 			<footer class="footer">
-				<div class="footer_background" style="background-image:url(images/footer_background.png)"></div>
+				<div class="footer_background" style="background-image:url(./etudiant/images/footer_background.png)">
+				</div>
 				<div class="container">
 					<div class="row footer_row">
 						<div class="col">
@@ -681,10 +688,10 @@ if (isset($_POST["logout"])) {
 										<div class="footer_section footer_mobile">
 											<div class="footer_title">Mobile</div>
 											<div class="footer_mobile_content">
-												<div class="footer_image"><a href="#"><img src="images/mobile_1.png"
-															alt=""></a></div>
-												<div class="footer_image"><a href="#"><img src="images/mobile_2.png"
-															alt=""></a></div>
+												<div class="footer_image"><a href="#"><img
+															src="./etudiant/images/mobile_1.png" alt=""></a></div>
+												<div class="footer_image"><a href="#"><img
+															src="./etudiant/images/mobile_2.png" alt=""></a></div>
 											</div>
 										</div>
 									</div>
@@ -716,34 +723,33 @@ if (isset($_POST["logout"])) {
 				</div>
 			</footer>
 		</div>
-		<script src="js/jquery-3.2.1.min.js"></script>
-		<script src="styles/bootstrap4/popper.js"></script>
-		<script src="styles/bootstrap4/bootstrap.min.js"></script>
-		<script src="plugins/greensock/TweenMax.min.js"></script>
-		<script src="plugins/greensock/TimelineMax.min.js"></script>
-		<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
-		<script src="plugins/greensock/animation.gsap.min.js"></script>
-		<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
-		<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-		<script src="plugins/easing/easing.js"></script>
-		<script src="plugins/parallax-js-master/parallax.min.js"></script>
-		<script src="js/custom.js"></script>
+		<script src="./etudiant/js/jquery-3.2.1.min.js"></script>
+		<script src="./etudiant/styles/bootstrap4/popper.js"></script>
+		<script src="./etudiant/styles/bootstrap4/bootstrap.min.js"></script>
+		<script src="./etudiant/plugins/greensock/TweenMax.min.js"></script>
+		<script src="./etudiant/plugins/greensock/TimelineMax.min.js"></script>
+		<script src="./etudiant/plugins/scrollmagic/ScrollMagic.min.js"></script>
+		<script src="./etudiant/plugins/greensock/animation.gsap.min.js"></script>
+		<script src="./etudiant/plugins/greensock/ScrollToPlugin.min.js"></script>
+		<script src="./etudiant/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+		<script src="./etudiant/plugins/easing/easing.js"></script>
+		<script src="./etudiant/plugins/parallax-js-master/parallax.min.js"></script>
+		<script src="./etudiant/js/custom.js"></script>
 
 		<script>
-    const profileMenuButton = document.getElementById('profileMenuButton');
-    const profileMenu = document.getElementById('profileMenu');
+			const profileMenuButton = document.getElementById('profileMenuButton');
+			const profileMenu = document.getElementById('profileMenu');
 
-    profileMenuButton.addEventListener('click', () => {
-        profileMenu.classList.toggle('hidden');
-    });
+			profileMenuButton.addEventListener('click', () => {
+				profileMenu.classList.toggle('hidden');
+			});
 
-    window.addEventListener('click', (e) => {
-        if (!profileMenuButton.contains(e.target) && !profileMenu.contains(e.target)) {
-            profileMenu.classList.add('hidden');
-        }
-    });
-</script>
+			window.addEventListener('click', (e) => {
+				if (!profileMenuButton.contains(e.target) && !profileMenu.contains(e.target)) {
+					profileMenu.classList.add('hidden');
+				}
+			});
+		</script>
 </body>
 
 </html>
-

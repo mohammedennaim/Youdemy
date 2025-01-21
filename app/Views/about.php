@@ -1,14 +1,17 @@
 <?php
+require_once "../../vendor/autoload.php";
+use App\Controllers\Courses\CourseController;
+
+$courseInstance = new CourseController();
+$courses = $courseInstance->getAllCourses();
 session_start();
 if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] == "etudiant") {
 	header("location:../auth/login.php");
 }
 if (isset($_POST["logout"])) {
-    $role = $_SESSION["role"];
-    session_name('session_' . $role);
     session_unset();
     session_destroy();
-    header("Location: ../../../auth/login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 ?>
@@ -20,14 +23,14 @@ if (isset($_POST["logout"])) {
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="Academy project">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
-<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href="plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="styles/about.css">
-<link rel="stylesheet" type="text/css" href="styles/about_responsive.css">
+<link rel="stylesheet" type="text/css" href="./etudiant/styles/bootstrap4/bootstrap.min.css">
+<link href="./etudiant/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="./etudiant/plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="./etudiant/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+<link rel="stylesheet" type="text/css" href="./etudiant/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+<link rel="stylesheet" type="text/css" href="./etudiant/plugins/OwlCarousel2-2.2.1/animate.css">
+<link rel="stylesheet" type="text/css" href="./etudiant/styles/about.css">
+<link rel="stylesheet" type="text/css" href="./etudiant/styles/about_responsive.css">
 </head>
 <body>
 
@@ -126,7 +129,7 @@ if (isset($_POST["logout"])) {
 				<!-- About Item -->
 				<div class="col-lg-4 about_col about_col_left">
 					<div class="about_item">
-						<div class="about_item_image"><img src="images/about_1.jpg" alt=""></div>
+						<div class="about_item_image"><img src="./etudiant/images/about_1.jpg" alt=""></div>
 						<div class="about_item_title"><a href="#">Our Stories</a></div>
 						<div class="about_item_text">
 							<p>Lorem ipsum dolor sit , consectet adipisi elit, sed do eiusmod tempor for enim en consectet adipisi elit, sed do consectet adipisi elit, sed doadesg.</p>
@@ -137,7 +140,7 @@ if (isset($_POST["logout"])) {
 				<!-- About Item -->
 				<div class="col-lg-4 about_col about_col_middle">
 					<div class="about_item">
-						<div class="about_item_image"><img src="images/about_2.jpg" alt=""></div>
+						<div class="about_item_image"><img src="./etudiant/images/about_2.jpg" alt=""></div>
 						<div class="about_item_title"><a href="#">Our Mission</a></div>
 						<div class="about_item_text">
 							<p>Lorem ipsum dolor sit , consectet adipisi elit, sed do eiusmod tempor for enim en consectet adipisi elit, sed do consectet adipisi elit, sed doadesg.</p>
@@ -148,7 +151,7 @@ if (isset($_POST["logout"])) {
 				<!-- About Item -->
 				<div class="col-lg-4 about_col about_col_right">
 					<div class="about_item">
-						<div class="about_item_image"><img src="images/about_3.jpg" alt=""></div>
+						<div class="about_item_image"><img src="./etudiant/images/about_3.jpg" alt=""></div>
 						<div class="about_item_title"><a href="#">Our Vision</a></div>
 						<div class="about_item_text">
 							<p>Lorem ipsum dolor sit , consectet adipisi elit, sed do eiusmod tempor for enim en consectet adipisi elit, sed do consectet adipisi elit, sed doadesg.</p>
@@ -163,7 +166,7 @@ if (isset($_POST["logout"])) {
 	<!-- Feature -->
 
 	<div class="feature">
-		<div class="feature_background" style="background-image:url(images/courses_background.jpg)"></div>
+		<div class="feature_background" style="background-image:url(./etudiant/images/courses_background.jpg)"></div>
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -221,9 +224,9 @@ if (isset($_POST["logout"])) {
 				<!-- Feature Video -->
 				<div class="col-lg-6 feature_col">
 					<div class="feature_video d-flex flex-column align-items-center justify-content-center">
-						<div class="feature_video_background" style="background-image:url(images/video.jpg)"></div>
+						<div class="feature_video_background" style="background-image:url(./etudiant/images/video.jpg)"></div>
 						<a class="vimeo feature_video_button" href="https://player.vimeo.com/video/99340873?title=0" title="OH, PORTUGAL - IN 4K - Basti Hansen - Stock Footage">
-							<img src="images/play.png" alt="">
+							<img src="./etudiant/images/play.png" alt="">
 						</a>
 					</div>
 				</div>
@@ -238,7 +241,7 @@ if (isset($_POST["logout"])) {
 			<div class="row">
 				<div class="col">
 					<div class="section_title_container text-center">
-						<h2 class="section_title">The Best Tutors in Town</h2>
+						<h2 class="section_title">The Best Teacher in Town</h2>
 						<div class="section_subtitle"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel gravida arcu. Vestibulum feugiat, sapien ultrices fermentum congue, quam velit venenatis sem</p></div>
 					</div>
 				</div>
@@ -246,76 +249,32 @@ if (isset($_POST["logout"])) {
 			<div class="row team_row">
 				
 				<!-- Team Item -->
-				<div class="col-lg-3 col-md-6 team_col">
-					<div class="team_item">
-						<div class="team_image"><img src="images/team_1.jpg" alt=""></div>
-						<div class="team_body">
-							<div class="team_title"><a href="#">Jacke Masito</a></div>
-							<div class="team_subtitle">Marketing & Management</div>
-							<div class="social_list">
-								<ul>
-									<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
+						<?php
+						$courseInstance = new CourseController();
+						$courses = $courseInstance->getAllCourses();
+						for ($i = 0; $i < 4; $i++) {
+							?>
+							<div class="col-lg-3 col-md-6 team_col">
+								<div class="team_item">
+									<div class="team_image"><img src="./etudiant/images/team_2.jpg" alt=""></div>
+									<div class="team_body">
 
-				<!-- Team Item -->
-				<div class="col-lg-3 col-md-6 team_col">
-					<div class="team_item">
-						<div class="team_image"><img src="images/team_2.jpg" alt=""></div>
-						<div class="team_body">
-							<div class="team_title"><a href="#">William James</a></div>
-							<div class="team_subtitle">Designer & Website</div>
-							<div class="social_list">
-								<ul>
-									<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-								</ul>
+										<div class="team_title"><a href="#"><?= $courses[$i]['teacher_name']; ?></a></div>
+										<div class="team_subtitle"><?= $courses[$i]['title']; ?></div>
+										<div class="social_list">
+											<ul>
+												<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+												<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+												<li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- Team Item -->
-				<div class="col-lg-3 col-md-6 team_col">
-					<div class="team_item">
-						<div class="team_image"><img src="images/team_3.jpg" alt=""></div>
-						<div class="team_body">
-							<div class="team_title"><a href="#">John Tyler</a></div>
-							<div class="team_subtitle">Quantum mechanics</div>
-							<div class="social_list">
-								<ul>
-									<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- Team Item -->
-				<div class="col-lg-3 col-md-6 team_col">
-					<div class="team_item">
-						<div class="team_image"><img src="images/team_4.jpg" alt=""></div>
-						<div class="team_body">
-							<div class="team_title"><a href="#">Veronica Vahn</a></div>
-							<div class="team_subtitle">Math & Physics</div>
-							<div class="social_list">
-								<ul>
-									<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
+							<?php
+						}
+						?>
 
 			</div>
 		</div>
@@ -324,7 +283,7 @@ if (isset($_POST["logout"])) {
 	<!-- Counter -->
 
 	<div class="counter">
-		<div class="counter_background" style="background-image:url(images/counter_background.jpg)"></div>
+		<div class="counter_background" style="background-image:url(./etudiant/images/counter_background.jpg)"></div>
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6">
@@ -399,22 +358,22 @@ if (isset($_POST["logout"])) {
 						<div class="owl-carousel owl-theme partners_slider">
 
 							<!-- Partner Item -->
-							<div class="owl-item partner_item"><img src="images/partner_1.png" alt=""></div>
+							<div class="owl-item partner_item"><img src="./etudiant/images/partner_1.png" alt=""></div>
 
 							<!-- Partner Item -->
-							<div class="owl-item partner_item"><img src="images/partner_2.png" alt=""></div>
+							<div class="owl-item partner_item"><img src="./etudiant/images/partner_2.png" alt=""></div>
 
 							<!-- Partner Item -->
-							<div class="owl-item partner_item"><img src="images/partner_3.png" alt=""></div>
+							<div class="owl-item partner_item"><img src="./etudiant/images/partner_3.png" alt=""></div>
 
 							<!-- Partner Item -->
-							<div class="owl-item partner_item"><img src="images/partner_4.png" alt=""></div>
+							<div class="owl-item partner_item"><img src="./etudiant/images/partner_4.png" alt=""></div>
 
 							<!-- Partner Item -->
-							<div class="owl-item partner_item"><img src="images/partner_5.png" alt=""></div>
+							<div class="owl-item partner_item"><img src="./etudiant/images/partner_5.png" alt=""></div>
 
 							<!-- Partner Item -->
-							<div class="owl-item partner_item"><img src="images/partner_6.png" alt=""></div>
+							<div class="owl-item partner_item"><img src="./etudiant/images/partner_6.png" alt=""></div>
 
 						</div>
 					</div>
@@ -426,7 +385,7 @@ if (isset($_POST["logout"])) {
 	<!-- Footer -->
 
 	<footer class="footer">
-		<div class="footer_background" style="background-image:url(images/footer_background.png)"></div>
+		<div class="footer_background" style="background-image:url(./etudiant/images/footer_background.png)"></div>
 		<div class="container">
 			<div class="row footer_row">
 				<div class="col">
@@ -500,8 +459,8 @@ if (isset($_POST["logout"])) {
 								<div class="footer_section footer_mobile">
 									<div class="footer_title">Mobile</div>
 									<div class="footer_mobile_content">
-										<div class="footer_image"><a href="#"><img src="images/mobile_1.png" alt=""></a></div>
-										<div class="footer_image"><a href="#"><img src="images/mobile_2.png" alt=""></a></div>
+										<div class="footer_image"><a href="#"><img src="./etudiant/images/mobile_1.png" alt=""></a></div>
+										<div class="footer_image"><a href="#"><img src="./etudiant/images/mobile_2.png" alt=""></a></div>
 									</div>
 								</div>
 								
@@ -532,19 +491,19 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	</footer>
 </div>
 
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="styles/bootstrap4/popper.js"></script>
-<script src="styles/bootstrap4/bootstrap.min.js"></script>
-<script src="plugins/greensock/TweenMax.min.js"></script>
-<script src="plugins/greensock/TimelineMax.min.js"></script>
-<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
-<script src="plugins/greensock/animation.gsap.min.js"></script>
-<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
-<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-<script src="plugins/easing/easing.js"></script>
-<script src="plugins/parallax-js-master/parallax.min.js"></script>
-<script src="plugins/colorbox/jquery.colorbox-min.js"></script>
-<script src="js/about.js"></script>
+<script src="./etudiant/js/jquery-3.2.1.min.js"></script>
+<script src="./etudiant/styles/bootstrap4/popper.js"></script>
+<script src="./etudiant/styles/bootstrap4/bootstrap.min.js"></script>
+<script src="./etudiant/plugins/greensock/TweenMax.min.js"></script>
+<script src="./etudiant/plugins/greensock/TimelineMax.min.js"></script>
+<script src="./etudiant/plugins/scrollmagic/ScrollMagic.min.js"></script>
+<script src="./etudiant/plugins/greensock/animation.gsap.min.js"></script>
+<script src="./etudiant/plugins/greensock/ScrollToPlugin.min.js"></script>
+<script src="./etudiant/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="./etudiant/plugins/easing/easing.js"></script>
+<script src="./etudiant/plugins/parallax-js-master/parallax.min.js"></script>
+<script src="./etudiant/plugins/colorbox/jquery.colorbox-min.js"></script>
+<script src="./etudiant/js/about.js"></script>
 
 <script>
     const profileMenuButton = document.getElementById('profileMenuButton');

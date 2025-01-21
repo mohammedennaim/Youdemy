@@ -52,6 +52,20 @@ class AuthController {
             }
         } catch (\Exception $e) {
             echo $e->getMessage();
+        try {
+            $userModel = new AuthModel();
+
+            $userSignUp = $userModel->findUserByEmailAndPassword($email, $password);
+
+            if ($userSignUp === null) {
+                $userModel->register($name, $email, $password, $role);
+                header("Location: ../auth/login.php");
+                exit();
+            } else {
+                throw new \Exception("Cet email existe déjà.");
+            }
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
     }
 }

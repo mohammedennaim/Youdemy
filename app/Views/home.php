@@ -6,11 +6,9 @@ $courseInstance = new CourseController();
 $courses = $courseInstance->getAllCourses();
 
 if (isset($_POST["logout"])) {
-    $role = $_SESSION["role"];
-    session_name('session_' . $role);
     session_unset();
     session_destroy();
-    header("Location: ../../../auth/login.php");
+    header("Location: auth/login.php");
     exit();
 }
 ?>
@@ -69,7 +67,7 @@ if (isset($_POST["logout"])) {
 											</li>
 										<?php else: ?>
 											<li><a href="./auth/login.php">Login</a></li>
-											<li><a href="./auth/signup.php">Register</a></li>
+											<li><a href="./auth/register.php">Register</a></li>
 										<?php endif; ?>
 									</ul>
 								</nav>
@@ -279,7 +277,7 @@ if (isset($_POST["logout"])) {
 							</div>
 							<div class="course-footer">
 								<div class="span">
-									<p>🎓 <?= $courses[$i]['user_count']; ?> Etudiant</p>
+									<p>🎓 <?= $courses[$i]['student_count']; ?> Etudiant</p>
 								</div>
 								<div>
 									<button

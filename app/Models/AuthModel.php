@@ -9,7 +9,12 @@ use PDO;
 
 class AuthModel {
     private $conn;
+class AuthModel {
+    private $conn;
 
+    public function __construct() {
+        $this->conn = Database::connection();
+    }
     public function __construct() {
         $this->conn = Database::connection();
     }
@@ -59,6 +64,23 @@ class AuthModel {
         $stmt->bindParam(':role', $role);
         $stmt->bindParam(':status', $status);
 
+        if ($stmt->execute()) {
+            $userId = $this->conn->lastInsertId();
+            switch ($role) {
+                case "administrateur":
+                    return new Administrateur($userId, $name, $email, $hash, $role);
+                case "enseignant":
+                    return new Enseignant($userId, $email, $hash, $name, $role);
+                case "etudiant":
+                    return new Etudiant($userId, $email, $hash, $name, $role);
+                default:
+                    header("Location: login.php");
+                    break;
+            }
+            exit();
+        }
+        return null;
+    }
         if ($stmt->execute()) {
             $userId = $this->conn->lastInsertId();
             switch ($role) {

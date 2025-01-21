@@ -11,16 +11,14 @@ $tag = new TagControllers();
 $tags = $tag->allTags();
 
 session_start();
-// if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] == "etudiant") {
-// 	header("location:../auth/login.php");
-// }
+if (!isset($_SESSION["role"]) && !isset($_SESSION["id"]) && !$_SESSION["role"] == "etudiant") {
+	header("location:../auth/login.php");
+}
 if (isset($_POST["logout"])) {
-    $role = $_SESSION["role"];
-    session_name('session_' . $role);
-    session_unset();
-    session_destroy();
-    header("Location: ../../../auth/login.php");
-    exit();
+	session_unset();
+	session_destroy();
+	header("Location: ../auth/login.php");
+	exit();
 }
 ?>
 
@@ -47,7 +45,7 @@ if (isset($_POST["logout"])) {
 <body>
 
 	<div class="super_container">
-	<header class="header">
+		<header class="header">
 			<div class="header_container">
 				<div class="container">
 					<div class="row">
@@ -58,30 +56,20 @@ if (isset($_POST["logout"])) {
 										<div class="logo_text"><span>Aca</span>demy</div>
 									</a>
 								</div>
-								
-
 								<nav class="main_nav_contaner ml-auto">
 									<ul class="main_nav">
-										<li class="active"><a href="home.php">Home</a></li>
+										<li><a href="home.php">Home</a></li>
 										<li><a href="about.php">About</a></li>
 										<li class="active"><a href="courses.php">Courses</a></li>
 										<li><a href="blog.php">Blog</a></li>
-										<?php if (isset($_SESSION["id"]) && isset($_SESSION["role"])): ?>
-											<li class="dropdown">
-												<a href="#" class="dropbtn">Profil</a>
-												<div class="dropdown-content">
-													<a href="profile.php">Voir le profil</a>
-													<a href="settings.php">Paramètres</a>
-													<form method="post">
-														<button type="submit" name="logout"
-															class="logout-button">Déconnexion</button>
-													</form>
-												</div>
-											</li>
-										<?php else: ?>
-											<li><a href="./auth/login.php">Login</a></li>
-											<li><a href="./auth/signup.php">Register</a></li>
-										<?php endif; ?>
+										<li class="dropdown">
+											<a href="#" class="dropbtn">Profil</a>
+											<div class="dropdown-content">
+												<a href="profile.php">Voir le profil</a>
+												<a href="settings.php">Paramètres</a>
+												<a href="logout.php">Déconnexion</a>
+											</div>
+										</li>
 									</ul>
 								</nav>
 							</div>

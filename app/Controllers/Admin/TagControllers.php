@@ -72,7 +72,7 @@
         public function getAllTags()
     {
         try {
-            $tags = $this->tagModel->fetchAllTags();
+            $tags = $this->tag->fetchAllTags();
             return $tags;
         } catch (\Exception $e) {
             return 'error ' . $e->getMessage();
@@ -81,7 +81,7 @@
 
     public function getCourseById($id){
         try {
-            $course = $this->tagModel->CourseById($id);
+            $course = $this->tag->CourseById($id);
             return $course;
         } catch (\Exception $e) {
             return 'error ' . $e->getMessage();
@@ -90,7 +90,7 @@
     public function listCoursesbyTags()
     {
         try {
-            $courses = $this->tagModel->getCoursesWithTags();
+            $courses = $this->tag->getCoursesWithTags();
             return $courses;
         } catch (\Exception $e) {
             return 'error ' . $e->getMessage();
@@ -101,7 +101,7 @@
     public function suppressionCourse($id)
     {
         try {
-            $supprimerCourse = $this->tagModel->supprimerCourse($id);
+            $supprimerCourse = $this->tag->supprimerCourse($id);
             return $supprimerCourse;
         } catch (\Exception $e) {
             return 'error ' . $e->getMessage();
@@ -110,7 +110,7 @@
     public function deleteCourse($id)
     {
         try {
-            $result = $this->tagModel->supprimerCourse($id);
+            $result = $this->tag->supprimerCourse($id);
 
             if ($result) {
                 echo "Le cours a été supprimé avec succès.";

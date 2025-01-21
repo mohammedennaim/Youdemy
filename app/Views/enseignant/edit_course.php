@@ -1,7 +1,7 @@
 <?php
 require_once "../../../vendor/autoload.php";
 use App\Controllers\Admin\CategorieControllers;
-use App\Controllers\TagController\Tag;
+use App\Controllers\Admin\TagControllers;
 use App\Controllers\Courses\CourseController;
 session_start();
 
@@ -9,19 +9,19 @@ $courseId = $_GET['id'];
 
 $courseController = new CourseController();
 $categoryController = new CategorieControllers();
-$tagController = new Tag();
+$tagController = new TagControllers();
 
 $course = $courseController->getCourseById($courseId);
 $categories = $categoryController->allCategories();
 $tags = $tagController->getAllTags();
 
 if (isset($_POST["editCourse"])) {
-
     $courseId = $_GET['id'];
-
     $courseController = new CourseController();
-   
-    if ($courseController->updateCourse($courseId, $_POST['title'],$_POST['content'], $_POST['description'],$_POST['category_id'],$_POST['tags_id'])) {
+
+    $tags = isset($_POST['tags']) ? $_POST['tags'] : [];
+
+    if ($courseController->updateCourse($courseId, $_POST['title'], $_POST['content'], $_POST['description'], $_POST['category_id'], $tags)) {
         $_SESSION['success_message'] = "Cours mis à jour avec succès.";
     } else {
         $_SESSION['error_message'] = "Erreur lors de la mise à jour du cours.";

@@ -41,15 +41,16 @@ if (isset($_POST["addCourse"])) {
 }
 
 if (isset($_POST["deleteCourse"])) {
-    $courseID = $_POST["course_id"]; 
+    $courseID = $_POST["course_id"];
     $course = new CourseController();
     $result = $course->deleteCourse($courseID);
+
     if ($result) {
         $_SESSION['success_message'] = "Cours supprimé avec succès.";
     } else {
         $_SESSION['error_message'] = "Erreur lors de la suppression du cours.";
     }
-    header("Location: index.php"); 
+    header("Location: home.php");
     exit();
 }
 

@@ -151,6 +151,9 @@ class CourseModel
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
+        
+        // var_dump($course);
+        // exit();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getCourseByName($name)

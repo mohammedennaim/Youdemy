@@ -1,21 +1,18 @@
 <?php
 require_once "../../../vendor/autoload.php";
 use App\Controllers\Admin\CategorieControllers;
-use App\Controllers\TagController\Tag;
+use App\Controllers\Admin\TagControllers;
 use App\Controllers\Courses\CourseController;
 session_start();
 
-$tagController = new Tag();
+$tagController = new TagControllers();
 $tags = $tagController->getAllTags();
 
-
 if (isset($_POST["addCourse"])) {
-    
     $titre = $_POST['title'];
     $description = $_POST['description'];
     $content = $_POST['content'];
-    $selectedTags[] = $_POST['tags'];
-
+    $selectedTags = $_POST['tags'];
     $enseignant_id = $_SESSION['id'];
     $categoryId = $_POST['course_id'];
 
@@ -27,13 +24,18 @@ if (isset($_POST["addCourse"])) {
             'content' => $content,
             'enseignant_id' => $enseignant_id,
             'category_id' => $categoryId,
-            'tagsId' => $selectedTags
+            'tags' => $selectedTags
         ]);
-        $_SESSION['success_message'] = "Course créé avec succès.";
+
+        if ($courseId) {
+            $_SESSION['success_message'] = "Cours créé avec succès.";
+        } else {
+            $_SESSION['error_message'] = "Erreur lors de la création du cours.";
+        }
     } catch (Exception $e) {
-        $_SESSION['error_message'] = "Erreur lors de la création du course : " . $e->getMessage();
+        $_SESSION['error_message'] = "Erreur lors de la création du cours : " . $e->getMessage();
     }
-    header("Location: home.php"); 
+    header("Location: home.php");
     exit();
 }
 ?>

@@ -3,7 +3,7 @@ namespace App\Controllers\Courses;
 use App\Models\CourseModel;
 use App\Models\Enrollment;
 use App\Models\TagModel;
-use PDOException;
+// use PDOException;
 class CourseController
 {
     private $courseModel;
@@ -14,21 +14,21 @@ class CourseController
         $this->tagModel = new TagModel();
     }
 
-    public function createCourse($postData) {
-        $title = trim($postData['title']);
-        $description = trim($postData['description']);
-        $content = trim($postData['content']);
-        $enseignant_id = (int) $postData['enseignant_id'];
-        $categorie_id = (int) $postData['category_id']; 
-        $selectedTags = isset($postData['tags']) ? $postData['tags'] : [];
-
-        $course = $this->courseModel-> addCourse($title, $description, $content, $enseignant_id, $categorie_id);
-
-        if ($course) {
+    public function createCourse($data) {
+        $title = trim($data['title']);
+        $description = trim($data['description']);
+        $content = trim($data['content']);
+        $enseignant_id = (int) $data['enseignant_id'];
+        $categorie_id = (int) $data['category_id'];
+        $selectedTags = isset($data['tags']) ? $data['tags'] : [];
+    
+        $courseId = $this->courseModel->addCourse($title, $description, $content, $enseignant_id, $categorie_id);
+    
+        if ($courseId && !empty($selectedTags)) {
             $this->courseModel->addCourseTags($courseId, $selectedTags);
         }
-
-        return $course;
+    
+        return $courseId;
     }
 
     public function getAllCourses()
@@ -60,26 +60,14 @@ class CourseController
 
     }
 
-    public function suppressionCourse($id)
-    {
+    public function deleteCourse($id) {
         try {
-            $supprimerCourse = $this->courseModel->supprimerCourse($id);
-            return $supprimerCourse;
+            return $this->courseModel->delete($id);
         } catch (\Exception $e) {
-            return 'error ' . $e->getMessage();
+            error_log("Erreur lors de la suppression du cours : " . $e->getMessage());
+            return false;
         }
     }
-    public function deleteCourse($id)
-    {
-        try {
-            $result = $this->courseModel->delete($id);
-            return $result;
-            
-        } catch (\Exception $e) {
-            return 'error ' . $e->getMessage();
-        }
-    }
-
 
     public function enrollCourse($courseId) {
         session_start();
@@ -115,16 +103,15 @@ class CourseController
         }
     }
 
-    public function updateCourse($courseId, $title,  $description, $content, $categorie_id, $tags_ids)
-    {
+    public function updateCourse($courseId, $title, $description, $content, $categorie_id, $tags_ids) {
         // var_dump($content,$description);
         // exit();
         try {
             $this->courseModel->updateCourseTags($courseId, $tags_ids);
             return $this->courseModel->updateCourse($courseId, $title, $description, $content, $categorie_id);
-           // return true;
         } catch (\Exception $e) {
-            return 'Erreur : ' . $e->getMessage(); 
+            error_log("Erreur lors de la mise à jour du cours : " . $e->getMessage());
+            return false;
         }
     }
 }

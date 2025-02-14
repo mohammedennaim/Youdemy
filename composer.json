@@ -1,0 +1,17 @@
+{
+    "name": "youcode/live-coding",
+    "autoload": {
+        "classmap": [
+            "app/"
+        ]
+    },
+    "authors": [
+        {
+            "name": "mohammedennaim",
+            "email": "mohammedennaim99@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
